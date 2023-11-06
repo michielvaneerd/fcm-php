@@ -72,19 +72,19 @@ class Messaging
                     try {
                         // Error responses are JSON with an 'error' key that is an array.
                         $content = $response->toArray(false);
+                        $rawContent = $response->getContent(false);
                         $error = $content['error'];
                         $errorName = $error['status'] ?? null;
                         $errorMessage = $error['message'] ?? null;
                     } catch (\Exception $ex) {
-                        $rawContent = $response->getContent(false);
                     }
 
-                    if ($code === 400 && $errorName === 'INVALID_ARGUMENT') {
+                    if (in_array($errorName, ['INVALID_ARGUMENT', 'NOT_FOUND', 'UNREGISTERED'])) {
                         $sendResult->invalidIds[] = $message->id;
                     } elseif ($code === 401 && $errorName === 'UNAUTHENTICATED') {
                         if ($withForceTokenFromApi) {
-                            $sendResult->errorIds[$message->id] = new FcmException($errorMessage ?? 'Cannot get access token', $code, $content, $errorName, $rawContent);
-                            throw new FcmException($errorMessage ?? 'Cannot get access token', $code, $content, $errorName, $rawContent, $sendResult);
+                            $sendResult->errorIds[$message->id] = new FcmException($errorMessage ?? 'Cannot get access token from API', $code, $content, $errorName, $rawContent);
+                            throw new FcmException($errorMessage ?? 'Cannot get access token from API', $code, $content, $errorName, $rawContent, $sendResult);
                         }
                         array_unshift($messages, $message); // Put back this last message we removed earlier, because we have to process this one again.
                         return $this->sendAll($messages, $sendResult);
