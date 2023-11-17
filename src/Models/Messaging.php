@@ -8,20 +8,14 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Messaging
 {
-    // All errors are composed like this:
-    // {
-    //     "error": {
-    //         "code": 400, // the same as the HTTP statusocde
-    //         "message": "Fail to resolve resource 'projects/BLAAT'",
-    //         "status": "INVALID_ARGUMENT"
-    //     }
-    // }
-
+    private AccessTokenHandler $accessTokenHandler;
 
     function __construct(
-        private AccessTokenHandler $accessTokenHandler,
+        private CacheInterface $cache,
+        string $jsonFile,
         private readonly ?LoggerInterface $logger
     ) {
+        $this->accessTokenHandler = new AccessTokenHandler($cache, $jsonFile, $logger);
     }
 
     private function callWithRetryOnExpiredAccessToken(
