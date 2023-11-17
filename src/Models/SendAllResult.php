@@ -9,11 +9,11 @@ namespace Mve\FcmPhp\Models;
 class SendAllResult
 {
     /**
-     * @param int[] $sentIds Message id's that have been sent successfully.
-     * @param int[] $invalidIds Message id's that have invalid tokens.
-     * @param array<int, FcmError> $errorIds Message id's and errors.
+     * @param array<int, string> $sent Message id's that have been sent successfully and their Firebase message ID.
+     * @param array<int, FcmError> $unregistered Message id's that have unregistered tokens (these can be removed).
+     * @param array<int, FcmError> $errors Message id's and FcmError errors.
      */
-    function __construct(public array $sentIds = [], public array $invalidIds = [], public array $errorIds = [])
+    function __construct(public array $sent = [], public array $unregistered = [], public array $errors = [])
     {
     }
 }

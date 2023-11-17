@@ -33,12 +33,18 @@ class MessagingWithEnvTokenTest extends MyBaseTestCase
             return new TokenMessage($id, $token, self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id", self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id");
         }, $this->tokens, array_keys($this->tokens));
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertEquals(count($this->tokens), count($sendResult->sentIds) + count($sendResult->invalidIds) + count($sendResult->errorIds));
+        $this->assertEquals(count($this->tokens), count($sendResult->sent) + count($sendResult->unregistered) + count($sendResult->errors));
     }
 
     public function testSubscribeToTopic()
     {
         $result = $this->messaging->subscribeToTopic($this->tokens[0], self::TOPIC_NAME);
+        $this->assertTrue($result);
+    }
+
+    public function testUnsubscribeFromTopic()
+    {
+        $result = $this->messaging->unsubscribeFromTopic($this->tokens, self::TOPIC_NAME);
         $this->assertTrue($result);
     }
 }

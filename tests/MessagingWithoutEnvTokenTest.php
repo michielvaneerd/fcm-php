@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Mve\FcmPhp\Models\FcmError;
 use Mve\FcmPhp\Models\FcmException;
 use Mve\FcmPhp\Models\Message;
 use Mve\FcmPhp\Models\Messaging;
@@ -43,19 +44,19 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
             new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
         ];
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertCount(1, $sendResult->invalidIds);
-        $this->assertEquals(1, $sendResult->invalidIds[0]);
+        $this->assertCount(1, $sendResult->unregistered);
+        $this->assertInstanceOf(FcmError::class, $sendResult->unregistered[1]);
     }
 
     public function testSendInvalidToken()
     {
         $token = self::INVALID_TOKEN;
         $messages = [
-            new Message(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
+            new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
         ];
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertCount(1, $sendResult->errorIds);
-        $this->assertInstanceOf(FcmException::class, $sendResult->errorIds[1]);
+        $this->assertCount(1, $sendResult->errors);
+        $this->assertInstanceOf(FcmError::class, $sendResult->errors[1]);
     }
 
     public function testSendToTopic()
@@ -65,9 +66,4 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
         $this->assertTrue($result);
     }
 
-    public function testUnsubscribeFromTopic()
-    {
-        $result = $this->messaging->unsubscribeFromTopic($this->tokens, self::TOPIC_NAME);
-        $this->assertTrue($result);
-    }
 }

@@ -14,3 +14,9 @@
     - The frequency of new subscriptions is rate-limited per project. If you send too many subscription requests in a short period of time, FCM servers will respond with a 429 RESOURCE_EXHAUSTED ("quota exceeded") response. Retry with exponential backoff.
 - https://stackoverflow.com/questions/37646157/how-to-delete-a-topic-from-firebase-console-fcm - A topic is deleted once there are no subscriptions to it anymore. So this means we have to store topic tokens ourselves.
 - Topics get created when you add tokens to it, so there is no API call to only create a topic. Use https://iid.googleapis.com/iid/v1:batchAdd to add tokens to a topic and at the same time create the topic.
+
+## Errors
+
+- https://cloud.google.com/resource-manager/docs/core_errors - Core errors
+- https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode - Specific FCM error codes (can override the core errors)
+- https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances - Specific error codes for topic management

@@ -8,8 +8,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Messaging
 {
-    use LoggerTrait;
-
     // All errors are composed like this:
     // {
     //     "error": {
@@ -19,78 +17,23 @@ class Messaging
     //     }
     // }
 
-    // https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
-    private const ERROR_CODES_MESSAGING = [
-        'INVALID_ARGUMENT' => [
-            'code' => 400,
-            'desc' => 'Request parameters were invalid.'
-        ],
-        'UNREGISTERED' => [
-            'code' => 404,
-            'desc' => 'App instance was unregistered from FCM.'
-        ],
-        'SENDER_ID_MISMATCH' => [
-            'code' => 403,
-            'desc' => 'The authenticated sender ID is different from the sender ID for the registration token.'
-        ],
-        'QUOTA_EXCEEDED' => [
-            'code' => 429,
-            'desc' => 'Sending limit exceeded for the message target.'
-        ],
-        'UNAVAILABLE' => [
-            'code' => 503,
-            'desc' => 'The server is overloaded.'
-        ],
-        'INTERNAL' => [
-            'code' => 500,
-            'desc' => 'An unknown internal error occurred.'
-        ],
-        'THIRD_PARTY_AUTH_ERROR' => [
-            'code' => 401,
-            'desc' => 'APNs certificate or web push auth key was invalid or missing.'
-        ],
-
-        // This is not named on this page, but will be received when we do a call without a valid bearer token.
-        // But these error codes are defined in: https://cloud.google.com/resource-manager/docs/core_errors - which are GLOBAL error codes
-        // that are global to the Google API's for many projects.
-        'UNAUTHENTICATED' => [
-            'code' => 401,
-            'desc' => 'The user is not authorized to make the request.'
-        ],
-        // Also not named on this page, but it seems that this registration token has changed (so the app needs to POST it to the backend)
-        'NOT_FOUND' => [
-            'code' => 404,
-            'desc' => 'The requested operation failed because a resource associated with the request could not be found.'
-        ],
-        'TOO_MANY_REQUESTS' => [
-            'code' => 429,
-            'desc' => 'Too many requests have been sent within a given time span.'
-        ]
-    ];
-
-    // https://developers.google.com/instance-id/reference/server#results_3
-    // Apparently we always receive a 200 HTTP status code.
-    private const ERROR_CODES_TOPICS = [
-        'NOT_FOUND' => 'The registration token has been deleted or the app has been uninstalled.',
-        'INVALID_ARGUMENT' => 'The registration token provided is not valid for the Sender ID.',
-        'INTERNAL' => 'The backend server failed for unknown reasons. Retry the request.',
-        'TOO_MANY_TOPICS' => 'Excessive number of topics per app instance.',
-        'RESOURCE_EXHAUSTED' => 'Too many subscription or unsubscription requests in a short period of time. Retry with exponential backoff.'
-    ];
-
-    // https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
 
     function __construct(
         private AccessTokenHandler $accessTokenHandler,
-        private ?LoggerInterface $logger
+        private readonly ?LoggerInterface $logger
     ) {
     }
 
-    private function callWithRetryOnExpiredAccessToken(string $uri, string $method = 'POST', ?array $json = null, ?array $headers = null, ?bool $retry = false): ResponseInterface
-    {
+    private function callWithRetryOnExpiredAccessToken(
+        string $uri,
+        string $method = 'POST',
+        ?array $json = null,
+        ?array $headers = null,
+        ?bool $retry = false
+    ): ResponseInterface {
         $client = HttpClient::create();
         $bearerToken = $this->accessTokenHandler->getToken($retry);
-        $this->log("Send $method request to $uri for json " . json_encode($json));
+        $this->logger->debug("Send $method request to $uri for json " . json_encode($json));
         $options = [
             'auth_bearer' => $bearerToken,
             'headers' => [
@@ -105,7 +48,7 @@ class Messaging
         }
         $response = $client->request($method, $uri, $options);
         $statusCode = $response->getStatusCode();
-        $this->log("Response with status $statusCode: " . $response->getContent(false));
+        $this->logger->notice("Response with status $statusCode: " . $response->getContent(false));
         if ($statusCode === 401) {
             if ($retry) {
                 $error = FcmError::ERROR_UNAUTHENTICATED;
@@ -131,6 +74,19 @@ class Messaging
         return $response;
     }
 
+    /**
+     * Get info about a specific token.
+     * 
+     * @param string $token The registration token.
+     * @param string $details If we want more details for this token, like the topics for this token.
+     * 
+     * @return array JSON response.
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://developers.google.com/instance-id/reference/server#get_information_about_app_instances
+     */
     public function getInfo(string $token, bool $details = false): array
     {
         $uri = 'https://iid.googleapis.com/iid/info/' . $token;
@@ -150,6 +106,18 @@ class Messaging
         }
     }
 
+    /**
+     * Sends a message to a topic
+     * 
+     * @param TopicMessage $topicMessage The message to send.
+     * 
+     * @return bool True if we got a 200 status code.
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-topics
+     */
     public function sendToTopic(TopicMessage $topicMessage): bool
     {
         $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
@@ -157,6 +125,19 @@ class Messaging
         return $response->getStatusCode() === 200;
     }
 
+    /**
+     * Subscribe token to topic.
+     * 
+     * @param string $token The registration token.
+     * @param string $topic The topic.
+     * 
+     * @return bool True if we got a 200 status code.
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://developers.google.com/instance-id/reference/server#create_a_relation_mapping_for_an_app_instance
+     */
     public function subscribeToTopic(string $token, string $topic): bool
     {
         $uri = 'https://iid.googleapis.com/iid/v1/' . $token . '/rel/topics/' . $topic;
@@ -164,6 +145,19 @@ class Messaging
         return $response->getStatusCode() === 200;
     }
 
+    /**
+     * Unsubscribe tokens from topic.
+     * 
+     * @param array $tokens Array with tokens.
+     * @param string $topic Topic name.
+     * 
+     * @return bool True if we got a 200 status code.
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
+     */
     public function unsubscribeFromTopic(array $tokens, string $topic): bool
     {
         // See: https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
@@ -178,17 +172,23 @@ class Messaging
     }
 
     /**
-     * Send multiple messages to multiple devices.
+     * Send mutliple messages.
      * 
-     * @param TokenMessage[] $messages Messages to send
-     * @param SendAllResult $sendAllResult If this is set, then this is the second time this is called from within itself (to force get access token from API).
+     * @param array<TokenMessage> $tokenMessages A list of messages to send.
      * 
-     * @return SendAllResult Sent and invalid tokens.
+     * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
-     * @throws FcmException When we cannot get a valid access token.
-     * @throws Exception Other exceptions, like cannot connect to Google API, in this case it is not known if messages have been processed.
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      */
-    public function sendAll(array $tokenMessages, ?SendAllResult $sendAllResult = null): SendAllResult
+    public function sendAll(array $tokenMessages): SendAllResult
+    {
+        return $this->_sendAll($tokenMessages);
+    }
+
+    private function _sendAll(array $tokenMessages, ?SendAllResult $sendAllResult = null): SendAllResult
     {
         $client = HttpClient::create();
         $sendMessagesUri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
@@ -208,7 +208,7 @@ class Messaging
             // These are done async and with HTTP/2 multiplexed
             // The responses are lazy
             foreach ($tokenMessages as $message) {
-                $this->log("Send request to $sendMessagesUri for token {$message->getToken()}");
+                $this->logger->debug("Send request to $sendMessagesUri for token {$message->getToken()}");
                 $responses[] = $client->request('POST', $sendMessagesUri, [
                     'auth_bearer' => $bearerToken,
                     'json' => $message->toArray()
@@ -223,28 +223,39 @@ class Messaging
                 $message = array_shift($tokenMessages);
 
                 $code = $response->getStatusCode();
+                $content = $response->getContent(false);
+                $jsonResponse = null;
+                try {
+                    $jsonResponse = $response->toArray(false);
+                } catch (\Exception $ex) {
+                    // Do nothing.
+                }
 
                 if ($code === 200) {
-                    $sendAllResult->sentIds[] = $message->getId();
-                    $this->log("OK response for {$message->getToken()}");
+                    $sendAllResult->sent[$message->getId()] = $jsonResponse['name'];
                 } else {
-                    $fcmError = FcmError::fromApiResponse($response);
-                    $this->log("Error API response for {$message->getToken()}: " . $fcmError->content);
+                    $error = $jsonResponse['error'] ?? [];
+                    $errorStatus = $error['status'] ?? 'FCM_MISSING_ERROR';
+                    $errorMessage = $error['message'] ?? 'FCM_MISSING_MESSAGE';
+                    $fcmError = new FcmError($code, $errorStatus, $errorMessage, $content);
 
-                    if ($code === 404) {
-                        // We can also get 'INVALID_ARGUMENT' and this *can* be an invalid token error, but it can also be a wrongly formatted message,
-                        // so never remove the token based on this error.
-                        $sendAllResult->invalidIds[] = $message->getId();
-                    } elseif ($code === 401 && $fcmError->error === FcmError::ERROR_UNAUTHENTICATED) {
+                    if ($code === 404 && in_array($errorStatus, [FcmError::ERROR_UNREGISTERED, FcmError::ERROR_NOT_FOUND])) {
+                        // These are tokens that have been unregistered and can safely be removed.
+                        $sendAllResult->unregistered[$message->getId()] = $fcmError;
+                    } elseif ($code === 401 && $error === FcmError::ERROR_UNAUTHENTICATED) {
+                        // This means we have an expired access token, so try again but this time get a new access token from the Google API instead
+                        // of using the one from the cache.
                         if ($withForceTokenFromApi) {
-                            $sendAllResult->errorIds[$message->getId()] = $fcmError;
+                            // If this is the second time we are here, exit with an exception.
+                            // This is serious, because this means we cannot get an access token from the Google API.
+                            $sendAllResult->errors[$message->getId()] = $fcmError;
                             throw new FcmException($fcmError, $sendAllResult);
                         }
                         array_unshift($tokenMessages, $message); // Put back this last message we removed earlier, because we have to process this one again.
-                        return $this->sendAll($tokenMessages, $sendAllResult);
+                        return $this->_sendAll($tokenMessages, $sendAllResult);
                     } else {
-                        // We have an unknown error
-                        $sendAllResult->errorIds[$message->getId()] = $fcmError;
+                        $this->logger->warning("Unknown API response with statuscode $code for {$message->getToken()}: " . $content);
+                        $sendAllResult->errors[$message->getId()] = $fcmError;
                     }
                 }
             }
@@ -261,30 +272,4 @@ class Messaging
 
         return $sendAllResult;
     }
-
-    /*
-    ALs je een zelfverzonnen token gebruikt (die voldoet dus niet aan hoe een token eruit ziet):
-1 => array:1 [▼
-      "error" => array:4 [▼
-        "code" => 400
-        "message" => "The registration token is not a valid FCM registration token"
-        "status" => "INVALID_ARGUMENT"
-        "details" => array:1 [▶]
-      ]
-    ]
-
-
-    Als je een verkeerde bearer token genbruikt:
-
-    0 => 401
-    1 => array:1 [▼
-      "error" => array:3 [▼
-        "code" => 401
-        "message" => "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.goo ▶"
-        "status" => "UNAUTHENTICATED"
-      ]
-    ]
-  ]
-
-    */
 }
