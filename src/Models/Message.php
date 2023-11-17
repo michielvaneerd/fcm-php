@@ -2,22 +2,26 @@
 
 namespace Mve\FcmPhp\Models;
 
-class Message
+abstract class Message
 {
-    function __construct(public readonly int $id, public readonly string $token, public readonly string $body, public readonly string $title)
+
+    function __construct(private int $id, private string $body, private string $title)
     {
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function toArray(): array
     {
-        return [
-            'message' => [
-                'token' => $this->token,
-                'notification' => [
-                    'body' => $this->body,
-                    'title' => $this->title
-                ]
+        $message = [
+            'notification' => [
+                'body' => $this->body,
+                'title' => $this->title
             ]
         ];
+        return ['message' => $message];
     }
 }

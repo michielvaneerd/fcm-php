@@ -4,12 +4,20 @@ use Mve\Tests\MyBaseTestCase;
 
 class AccessTokenHandlerTest extends MyBaseTestCase
 {
-    public function testGetToken(?bool $forceFromApi = false): void
+    // public function testGetTokenWithForceFromAPI(): void
+    // {
+    //     $this->assertNotEmpty($this->accessTokenHandler->getProjectId());
+    //     $accessToken = $this->accessTokenHandler->getToken(true);
+    //     $this->assertNotEmpty($accessToken);
+    // }
+
+    /**
+     * Test getting access token from cache and if this does not exist, get it from the Google API and write it to cache.
+     */
+    public function testGetToken(): void
     {
         $this->assertNotEmpty($this->accessTokenHandler->getProjectId());
-        $this->echo("Project ID = " . $this->accessTokenHandler->getProjectId() . "\n");
         $accessToken = $this->accessTokenHandler->getToken();
-        $this->echo("Access token = $accessToken\n");
         $this->assertNotEmpty($accessToken);
     }
 }

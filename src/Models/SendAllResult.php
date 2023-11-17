@@ -11,7 +11,7 @@ class SendAllResult
     /**
      * @param int[] $sentIds Message id's that have been sent successfully.
      * @param int[] $invalidIds Message id's that have invalid tokens.
-     * @param array<int, FcmException> $errorIds Message id's and exceptions.
+     * @param array<int, FcmError> $errorIds Message id's and errors.
      */
     function __construct(public array $sentIds = [], public array $invalidIds = [], public array $errorIds = [])
     {

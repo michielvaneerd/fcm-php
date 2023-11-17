@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Mve\FcmPhp\Models;
 
@@ -13,5 +15,4 @@ interface CacheInterface
     public function flush(): mixed;
 
     public function has(string $key): bool;
-
 }

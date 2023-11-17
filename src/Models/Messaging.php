@@ -4,22 +4,20 @@ namespace Mve\FcmPhp\Models;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Messaging
 {
-
     use LoggerTrait;
 
-    // All errors are at least composed like this:
+    // All errors are composed like this:
     // {
     //     "error": {
-    //         "code": 400,
+    //         "code": 400, // the same as the HTTP statusocde
     //         "message": "Fail to resolve resource 'projects/BLAAT'",
     //         "status": "INVALID_ARGUMENT"
     //     }
     // }
-
-    private const ERROR_UNAUTHENTICATED = 'UNAUTHENTICATED';
 
     // https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
     private const ERROR_CODES_MESSAGING = [
@@ -88,55 +86,101 @@ class Messaging
     ) {
     }
 
-    public function subscribeToTopic(string $token, string $topic): bool
+    private function callWithRetryOnExpiredAccessToken(string $uri, string $method = 'POST', ?array $json = null, ?array $headers = null, ?bool $retry = false): ResponseInterface
     {
         $client = HttpClient::create();
-        $uri = 'https://iid.googleapis.com/iid/v1/' . $token . '/rel/topics/' . $topic;
-        try {
-            $bearerToken = $this->accessTokenHandler->getToken();
-            $response = $client->request('POST', $uri, [
-                'auth_bearer' => $bearerToken,
-                'json' => [],
-                'headers' => [
-                    'access_token_auth' => 'true',
-                ]
-            ]);
-            return $response->getStatusCode() === 200;
-        } catch (\Exception $ex) {
-            // Or do something else?
-            throw $ex;
+        $bearerToken = $this->accessTokenHandler->getToken($retry);
+        $this->log("Send $method request to $uri for json " . json_encode($json));
+        $options = [
+            'auth_bearer' => $bearerToken,
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ];
+        if (!empty($headers)) {
+            $options['headers'] = $options['headers'] + $headers;
         }
+        if (!empty($json)) {
+            $options['json'] = $json;
+        }
+        $response = $client->request($method, $uri, $options);
+        $statusCode = $response->getStatusCode();
+        $this->log("Response with status $statusCode: " . $response->getContent(false));
+        if ($statusCode === 401) {
+            if ($retry) {
+                $error = FcmError::ERROR_UNAUTHENTICATED;
+                $message = FcmError::ERROR_UNAUTHENTICATED;
+                try {
+                    $jsonResponse = $response->toArray(false);
+                    if (!empty($jsonResponse['error'])) {
+                        if (!empty($jsonResponse['error']['status'])) {
+                            $error = $jsonResponse['error']['status'];
+                        }
+                        if (!empty($jsonResponse['error']['message'])) {
+                            $message = $jsonResponse['error']['message'];
+                        }
+                    }
+                } catch (\Exception $ex) {
+                    // Do nothing, because we know that some responses are not in JSON format.
+                }
+                throw new FcmException(new FcmError($statusCode, $error, $message, $response->getContent(false)));
+            } else {
+                return $this->callWithRetryOnExpiredAccessToken($uri, $method, $json, $headers, true);
+            }
+        }
+        return $response;
+    }
+
+    public function getInfo(string $token, bool $details = false): array
+    {
+        $uri = 'https://iid.googleapis.com/iid/info/' . $token;
+        if ($details) {
+            $uri .= "?details=true";
+        }
+        $headers = [
+            'access_token_auth' => 'true',
+        ];
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'GET', null, $headers);
+        $code = $response->getStatusCode();
+        $json = $response->toArray(false);
+        if ($code === 200) {
+            return $json;
+        } else {
+            throw new FcmException(new FcmError($code, $json['error'], '', $response->getContent(false)));
+        }
+    }
+
+    public function sendToTopic(TopicMessage $topicMessage): bool
+    {
+        $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $topicMessage->toArray(), null);
+        return $response->getStatusCode() === 200;
+    }
+
+    public function subscribeToTopic(string $token, string $topic): bool
+    {
+        $uri = 'https://iid.googleapis.com/iid/v1/' . $token . '/rel/topics/' . $topic;
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', null, ['access_token_auth' => 'true']);
+        return $response->getStatusCode() === 200;
     }
 
     public function unsubscribeFromTopic(array $tokens, string $topic): bool
     {
-        $client = HttpClient::create();
+        // See: https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
+        // TODO: For each token we receive SUCCESS (empty) or some kind of ERROR code. But the HTTP response will still be 200.
         $uri = 'https://iid.googleapis.com/iid/v1:batchRemove';
-        try {
-            $bearerToken = $this->accessTokenHandler->getToken();
-            $response = $client->request('POST', $uri, [
-                'auth_bearer' => $bearerToken,
-                'json' => [
-                    'to' => $topic,
-                    'registration_tokens' => $tokens
-                ],
-                'headers' => [
-                    'access_token_auth' => 'true',
-                ]
-            ]);
-            // See: https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
-            // For each token we receive SUCCESS (empty) or some kind of ERROR code. But the HTTP response will still be 200.
-            return $response->getStatusCode() === 200;
-        } catch (\Exception $ex) {
-            // Or do something else?
-            throw $ex;
-        }
+        $json = [
+            'to' => "/topics/$topic",
+            'registration_tokens' => $tokens
+        ];
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $json, ['access_token_auth' => 'true']);
+        return $response->getStatusCode() === 200;
     }
 
     /**
      * Send multiple messages to multiple devices.
      * 
-     * @param Message[] $messages Messages to send
+     * @param TokenMessage[] $messages Messages to send
      * @param SendAllResult $sendAllResult If this is set, then this is the second time this is called from within itself (to force get access token from API).
      * 
      * @return SendAllResult Sent and invalid tokens.
@@ -144,7 +188,7 @@ class Messaging
      * @throws FcmException When we cannot get a valid access token.
      * @throws Exception Other exceptions, like cannot connect to Google API, in this case it is not known if messages have been processed.
      */
-    public function sendAll(array $messages, ?SendAllResult $sendAllResult = null): SendAllResult
+    public function sendAll(array $tokenMessages, ?SendAllResult $sendAllResult = null): SendAllResult
     {
         $client = HttpClient::create();
         $sendMessagesUri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
@@ -163,8 +207,8 @@ class Messaging
 
             // These are done async and with HTTP/2 multiplexed
             // The responses are lazy
-            foreach ($messages as $message) {
-                $this->log("Send request to $sendMessagesUri for token {$message->token}");
+            foreach ($tokenMessages as $message) {
+                $this->log("Send request to $sendMessagesUri for token {$message->getToken()}");
                 $responses[] = $client->request('POST', $sendMessagesUri, [
                     'auth_bearer' => $bearerToken,
                     'json' => $message->toArray()
@@ -176,46 +220,31 @@ class Messaging
             for ($i = 0; $i < count($responses); $i++) {
 
                 $response = $responses[$i];
-                $message = array_shift($messages);
+                $message = array_shift($tokenMessages);
 
                 $code = $response->getStatusCode();
 
                 if ($code === 200) {
-                    $sendAllResult->sentIds[] = $message->id;
-                    $this->log("OK response for {$message->token}");
+                    $sendAllResult->sentIds[] = $message->getId();
+                    $this->log("OK response for {$message->getToken()}");
                 } else {
-                    $content = null;
-                    $errorName = null;
-                    $rawContent = null;
-                    $errorMessage = null;
-
-                    try {
-                        // Error responses are JSON with an 'error' key that is an array.
-                        $rawContent = $response->getContent(false);
-                        $this->log("Error response for {$message->token}: $rawContent");
-                        $content = $response->toArray(false);
-                        $error = $content['error'];
-                        $errorName = $error['status'] ?? null;
-                        $errorMessage = $error['message'] ?? null;
-                    } catch (\Exception $ex) {
-                        // Do nothing, we just catch it in case toArray is called on a response that is not an array,
-                        // and in that case we will have the rawContent.
-                    }
+                    $fcmError = FcmError::fromApiResponse($response);
+                    $this->log("Error API response for {$message->getToken()}: " . $fcmError->content);
 
                     if ($code === 404) {
                         // We can also get 'INVALID_ARGUMENT' and this *can* be an invalid token error, but it can also be a wrongly formatted message,
                         // so never remove the token based on this error.
-                        $sendAllResult->invalidIds[] = $message->id;
-                    } elseif ($code === 401 && $errorName === self::ERROR_UNAUTHENTICATED) {
+                        $sendAllResult->invalidIds[] = $message->getId();
+                    } elseif ($code === 401 && $fcmError->error === FcmError::ERROR_UNAUTHENTICATED) {
                         if ($withForceTokenFromApi) {
-                            $sendAllResult->errorIds[$message->id] = new FcmException($errorMessage ?? 'Cannot get access token from API', $code, $content, $errorName, $rawContent);
-                            throw new FcmException($errorMessage ?? 'Cannot get access token from API', $code, $content, $errorName, $rawContent, $sendAllResult);
+                            $sendAllResult->errorIds[$message->getId()] = $fcmError;
+                            throw new FcmException($fcmError, $sendAllResult);
                         }
-                        array_unshift($messages, $message); // Put back this last message we removed earlier, because we have to process this one again.
-                        return $this->sendAll($messages, $sendAllResult);
+                        array_unshift($tokenMessages, $message); // Put back this last message we removed earlier, because we have to process this one again.
+                        return $this->sendAll($tokenMessages, $sendAllResult);
                     } else {
                         // We have an unknown error
-                        $sendAllResult->errorIds[$message->id] = new FcmException($errorMessage ?? 'Unknown error', $code, $content, $errorName, $rawContent);
+                        $sendAllResult->errorIds[$message->getId()] = $fcmError;
                     }
                 }
             }

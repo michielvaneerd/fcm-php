@@ -24,8 +24,6 @@ class AccessTokenHandler
         string $jsonFile,
         private ?LoggerInterface $logger
     ) {
-        //$this->cache = $cache;
-        //$this->logger = $logger;
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $jsonFile);
         $json = json_decode(file_get_contents($jsonFile));
         $this->projectId = $json->project_id;
