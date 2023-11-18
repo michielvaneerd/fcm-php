@@ -2,14 +2,23 @@
 
 namespace Mve\FcmPhp\Models;
 
+/**
+ * Message that is sent to a specific token.
+ */
 class TokenMessage extends Message
 {
-    function __construct(private readonly int $id, private readonly string $token, private readonly string $body, private readonly string $title)
+    /**
+     * @param string $token The registration token.
+     */
+    function __construct(private int $id, private string $token, private string $body, private string $title)
     {
         parent::__construct($id, $body, $title);
     }
 
-    public function getToken()
+    /**
+     * Returns the registration token.
+     */
+    public function getToken(): string
     {
         return $this->token;
     }

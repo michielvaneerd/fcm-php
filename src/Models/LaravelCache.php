@@ -17,18 +17,13 @@ class LaravelCache implements CacheInterface
         Cache::put($key, $value, $ttl);
     }
 
-    public function pull(string $key): mixed
+    public function forget(string $key): void
     {
-        return Cache::pull($key);
+        Cache::forget($key);
     }
 
-    public function flush(): mixed
+    public function flush(): void
     {
         Cache::flush();
-    }
-
-    public function has(string $key): bool
-    {
-        return Cache::has($key);
     }
 }

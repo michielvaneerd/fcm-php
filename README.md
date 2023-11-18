@@ -4,22 +4,23 @@ Send Google Firebase Cloud messages with PHP.
 
 ## Getting started
 
-Before you begin, make sure you have setup a Google Firebase project and have downloaded the JSON file.
+First make sure you have a Firebase project. See https://firebase.google.com/docs/admin/setup.
 
-Then instantiate a Messaging:
+Then create a Messaging instance:
 
 ```php
-new Messaging(new MyCache(), '/path/to/file.json', Log::getLogger())
+$messaging = new Messaging(new MyCache(), '/path/to/file.json', Log::getLogger());
 ```
 
-Arguments:
-- A `CacheInterface` implementation - see an example implementation for Laravel called `LaravelCache` in the `Models` directory.
-- The path to the Google Firebase JSON file.
-- An optional `Psr\Log\LoggerInterface` implementation. If you handle it a logger, logging will occur. This is handy for debugging purposes.
+The arguments:
 
-Now you can call the different methods on it.
+1. An instance of a `Mve\FcmPhp\Models\CacheInterface` implementation. This is a simple interface that defines 4 methods: `get`, `put`, `forget` and `flush` and is used to cache the access token.
+2. The path to the Google Firebase private key file in JSON format. Note: keep this file private!
+3. An optional `Psr\Log\LoggerInterface` implementation if you want to see some logging about the requests and responses. It's best to enable this only for debugging purposes.
 
-## Sending messages to specific devices
+Now you can call the different methods on the `Messaging` instance.
+
+## Sending messages to devices
 
 ```php
 // Create messages. The first argument is the ID - this can be used to map the result to the specific message after sending.

@@ -2,11 +2,25 @@
 
 namespace Mve\FcmPhp\Models;
 
+/**
+ * Message that is sent to a specific topic.
+ */
 class TopicMessage extends Message
 {
-    function __construct(private readonly int $id, private readonly string $topic, private readonly string $body, private readonly string $title)
+    /**
+     * @param string $topic The topic.
+     */
+    function __construct(private int $id, private string $topic, private string $body, private string $title)
     {
         parent::__construct($id, $body, $title);
+    }
+
+    /**
+     * Returns the topic.
+     */
+    public function getTopic(): string
+    {
+        return $this->topic;
     }
 
     public function toArray(): array

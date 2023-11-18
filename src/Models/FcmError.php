@@ -2,8 +2,9 @@
 
 namespace Mve\FcmPhp\Models;
 
-use Symfony\Contracts\HttpClient\ResponseInterface;
-
+/**
+ * An error with specific Google Firebase information.
+ */
 class FcmError
 {
 
@@ -12,6 +13,12 @@ class FcmError
     public const ERROR_NOT_FOUND = 'NOT_FOUND';
     public const ERROR_UNREGISTERED = 'UNREGISTERED';
 
+    /**
+     * @param int $code The error code (will be the same as the HTTP status code).
+     * @param string $error The error name.
+     * @param string $message A description of the error.
+     * @param string $content The raw content of the Google API response.
+     */
     function __construct(public readonly int $code, public readonly string $error, public readonly string $message, public readonly string $content)
     {
     }

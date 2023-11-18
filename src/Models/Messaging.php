@@ -6,10 +6,18 @@ use Symfony\Component\HttpClient\HttpClient;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Class for sending messages.
+ */
 class Messaging
 {
     private AccessTokenHandler $accessTokenHandler;
 
+    /**
+     * @param CacheInterface $cache A CacheInterface implemenation. This will be used to cache the access token.
+     * @param string $jsonFile The path to the Google Firebase private key file in JSON format.
+     * @param ?LoggerInterface $logger An optional LoggerInterface implemenation.
+     */
     function __construct(
         private CacheInterface $cache,
         string $jsonFile,
@@ -18,12 +26,23 @@ class Messaging
         $this->accessTokenHandler = new AccessTokenHandler($cache, $jsonFile, $logger);
     }
 
+    /**
+     * Call the Google API with one retry in case of expired access token.
+     * 
+     * @param string $uri Google API endpoint.
+     * @param string $method Method for API request.
+     * @param ?array $json The JSON body.
+     * @param ?array $headers The headers.
+     * @param bool $retry If this is the retry phase.
+     * 
+     * @return ResponseInterface The ResponseInterface instance.
+     */
     private function callWithRetryOnExpiredAccessToken(
         string $uri,
         string $method = 'POST',
         ?array $json = null,
         ?array $headers = null,
-        ?bool $retry = false
+        bool $retry = false
     ): ResponseInterface {
         $client = HttpClient::create();
         $bearerToken = $this->accessTokenHandler->getToken($retry);
@@ -69,7 +88,7 @@ class Messaging
     }
 
     /**
-     * Get info about a specific token.
+     * Gets info about a specific token.
      * 
      * @param string $token The registration token.
      * @param string $details If we want more details for this token, like the topics for this token.
@@ -166,7 +185,7 @@ class Messaging
     }
 
     /**
-     * Send mutliple messages.
+     * Send multiple messages.
      * 
      * @param array<TokenMessage> $tokenMessages A list of messages to send.
      * 
@@ -182,6 +201,19 @@ class Messaging
         return $this->_sendAll($tokenMessages);
     }
 
+    /**
+     * Send multiple messages with an optional retry in case of expired access token.
+     * 
+     * @param array<TokenMessage> $tokenMessages A list of messages to send.
+     * @param ?SendAllResult $sendAllResult The SendAllResult instance (this is only defined if this is a retry in case of expired access token).
+     * 
+     * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
+     */
     private function _sendAll(array $tokenMessages, ?SendAllResult $sendAllResult = null): SendAllResult
     {
         $client = HttpClient::create();

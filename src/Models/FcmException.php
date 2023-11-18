@@ -2,11 +2,17 @@
 
 namespace Mve\FcmPhp\Models;
 
+/**
+ * Exception with specific information that is from the Google Firebase API.
+ */
 class FcmException extends \Exception
 {
+    /**
+     * @param FcmError $fcmError The FcmError instance.
+     * @param ?SendAllResult $sendAllResult Optional SendAllResult instance, will only be defined when sending multiple messages. This way you can see which messages have already been sent and which one had errors.
+     */
     public function __construct(
         public readonly FcmError $fcmError,
-        // Optional SendAllResult (so you can see which items have been processed successfully already before this exception was thrown)
         public readonly ?SendAllResult $sendAllResult = null,
         \Throwable $previous = null
     ) {
