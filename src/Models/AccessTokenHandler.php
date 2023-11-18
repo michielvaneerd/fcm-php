@@ -8,6 +8,9 @@ use Google\Auth\ApplicationDefaultCredentials;
 use Google\Auth\FetchAuthTokenInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Manages the access token that is needed to authenticate the Google Firebase API calls.
+ */
 class AccessTokenHandler
 {
     private FetchAuthTokenInterface $fetchAuthToken;
@@ -17,6 +20,11 @@ class AccessTokenHandler
 
     const SCOPE_FIREBASE_MESSAGING = 'https://www.googleapis.com/auth/firebase.messaging';
 
+    /**
+     * @param CacheInterface $cache A CacheInterface implementation, used to cache the access token.
+     * @param string $jsonFile The Google private key JSON file.
+     * @param ?LoggerInterface $logger An optional LoggerInterface implementation.
+     */
     function __construct(
         private CacheInterface $cache,
         string $jsonFile,
@@ -28,7 +36,14 @@ class AccessTokenHandler
         $this->fetchAuthToken = ApplicationDefaultCredentials::getCredentials(self::SCOPE_FIREBASE_MESSAGING);
     }
 
-    public function getToken(?bool $forceFromApi = false): string
+    /**
+     * Returns a non expired access token from the cache, or if there isn't one, from the Google API and stores this one in the cache.
+     * 
+     * @param bool $forceFromApi If true, then it gets the access token from the Google API always, even there is still one in the cache.
+     * 
+     * @return string A non expired access token that can be used to authenticate the API calls.
+     */
+    public function getToken(bool $forceFromApi = false): string
     {
         $token = $forceFromApi ? null : $this->cache->get(self::CACHE_ACCESS_TOKEN_NAME);
         if (empty($token)) {
@@ -48,6 +63,9 @@ class AccessTokenHandler
         return $token;
     }
 
+    /**
+     * Returns the project ID.
+     */
     public function getProjectId(): string
     {
         return $this->projectId;

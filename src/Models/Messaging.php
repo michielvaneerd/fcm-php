@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mve\FcmPhp\Models;
 
 use Symfony\Component\HttpClient\HttpClient;

@@ -2,6 +2,10 @@
 
 Send Google Firebase Cloud messages with PHP.
 
+## API documentation
+
+See [API documentation](./apidoc/index.html)
+
 ## Getting started
 
 First make sure you have a Firebase project. See https://firebase.google.com/docs/admin/setup.
