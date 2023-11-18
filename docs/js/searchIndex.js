@@ -191,6 +191,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Mve-FcmPhp-Models-Messaging.html#method___construct"
         },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\Messaging\u003A\u003AgetAccessTokenHandler\u0028\u0029",
+            "name": "getAccessTokenHandler",
+            "summary": "Returns\u0020the\u0020AccessTokenHandler\u0020instance.",
+            "url": "classes/Mve-FcmPhp-Models-Messaging.html#method_getAccessTokenHandler"
+        },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\Messaging\u003A\u003AcallWithRetryOnExpiredAccessToken\u0028\u0029",
             "name": "callWithRetryOnExpiredAccessToken",
             "summary": "Call\u0020the\u0020Google\u0020API\u0020with\u0020one\u0020retry\u0020in\u0020case\u0020of\u0020expired\u0020access\u0020token.",
@@ -250,6 +255,36 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method___construct"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToSent\u0028\u0029",
+            "name": "addToSent",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToSent"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToUnregistered\u0028\u0029",
+            "name": "addToUnregistered",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToUnregistered"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToErrors\u0028\u0029",
+            "name": "addToErrors",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToErrors"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetSent\u0028\u0029",
+            "name": "getSent",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getSent"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetUnregistered\u0028\u0029",
+            "name": "getUnregistered",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getUnregistered"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetErrors\u0028\u0029",
+            "name": "getErrors",
+            "summary": "",
+            "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getErrors"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003A\u0024sent",
             "name": "sent",

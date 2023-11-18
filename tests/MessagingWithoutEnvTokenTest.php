@@ -15,12 +15,9 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
     private const CORRECTLY_FORMATTED_TOKEN = 'fKXG4UWOSVKh1XATm_14ZW:APA91bE59fuCLrQoq6HK1CJqJBQ29v9jY3QjhZ1aJXhD54F54SOpeMnYYudlCrMwWw3Plw-X9585-PYcYsjyFzuMlDmeBpYOOcUajTKQFoAmdrcSISLbF-jk7NmZXcDkCm9iVoFGJY_J';
     private const INVALID_TOKEN = 'abc';
 
-    private Messaging $messaging;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->messaging = new Messaging($this->accessTokenHandler, $this->logger);
     }
 
     public function testGetInfoFromUnregisteredToken()
@@ -44,8 +41,9 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
             new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
         ];
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertCount(1, $sendResult->unregistered);
-        $this->assertInstanceOf(FcmError::class, $sendResult->unregistered[1]);
+        $unregistered = $sendResult->getUnregistered();
+        $this->assertCount(1, $unregistered);
+        $this->assertInstanceOf(FcmError::class, $unregistered[1]);
     }
 
     public function testSendInvalidToken()
@@ -55,8 +53,9 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
             new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
         ];
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertCount(1, $sendResult->errors);
-        $this->assertInstanceOf(FcmError::class, $sendResult->errors[1]);
+        $errors = $sendResult->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertInstanceOf(FcmError::class, $errors[1]);
     }
 
     public function testSendToTopic()

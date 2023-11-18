@@ -29,6 +29,14 @@ class Messaging
     }
 
     /**
+     * Returns the AccessTokenHandler instance.
+     */
+    public function getAccessTokenHandler(): AccessTokenHandler
+    {
+        return $this->accessTokenHandler;
+    }
+
+    /**
      * Call the Google API with one retry in case of expired access token.
      * 
      * @param string $uri Google API endpoint.
@@ -260,7 +268,7 @@ class Messaging
                 }
 
                 if ($code === 200) {
-                    $sendAllResult->sent[$message->getId()] = $jsonResponse['name'];
+                    $sendAllResult->addToSent($message->getId(), $jsonResponse['name']);
                 } else {
                     $error = $jsonResponse['error'] ?? [];
                     $errorStatus = $error['status'] ?? 'FCM_MISSING_ERROR';
@@ -269,21 +277,21 @@ class Messaging
 
                     if ($code === 404 && in_array($errorStatus, [FcmError::ERROR_UNREGISTERED, FcmError::ERROR_NOT_FOUND])) {
                         // These are tokens that have been unregistered and can safely be removed.
-                        $sendAllResult->unregistered[$message->getId()] = $fcmError;
+                        $sendAllResult->addToUnregistered($message->getId(), $fcmError);
                     } elseif ($code === 401 && $error === FcmError::ERROR_UNAUTHENTICATED) {
                         // This means we have an expired access token, so try again but this time get a new access token from the Google API instead
                         // of using the one from the cache.
                         if ($withForceTokenFromApi) {
                             // If this is the second time we are here, exit with an exception.
                             // This is serious, because this means we cannot get an access token from the Google API.
-                            $sendAllResult->errors[$message->getId()] = $fcmError;
+                            $sendAllResult->addToErrors($message->getId(), $fcmError);
                             throw new FcmException($fcmError, $sendAllResult);
                         }
                         array_unshift($tokenMessages, $message); // Put back this last message we removed earlier, because we have to process this one again.
                         return $this->_sendAll($tokenMessages, $sendAllResult);
                     } else {
                         $this->logger->warning("Unknown API response with statuscode $code for {$message->getToken()}: " . $content);
-                        $sendAllResult->errors[$message->getId()] = $fcmError;
+                        $sendAllResult->addToErrors($message->getId(), $fcmError);
                     }
                 }
             }

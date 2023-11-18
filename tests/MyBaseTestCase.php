@@ -9,6 +9,7 @@ use Monolog\Level;
 use Monolog\Logger;
 use Mve\FcmPhp\Models\AccessTokenHandler;
 use Mve\FcmPhp\Models\CacheInterface;
+use Mve\FcmPhp\Models\Messaging;
 use PHPUnit\Framework\TestCase;
 
 class MyBaseTestCase extends TestCase
@@ -20,8 +21,8 @@ class MyBaseTestCase extends TestCase
     private CacheInterface $cache;
     private string $jsonFile;
     protected Logger $logger;
-    protected AccessTokenHandler $accessTokenHandler;
     protected array $tokens;
+    protected Messaging $messaging;
 
     public function echo($s)
     {
@@ -57,13 +58,7 @@ class MyBaseTestCase extends TestCase
             }, explode(',', $envTokens));
         }
 
-        // $this->cache = \Mockery::mock(CacheInterface::class);
-        // $this->cache->allows([
-        //     'get' => $this->accessToken,
-        //     'put' => null
-        // ]);
-
-        $this->accessTokenHandler = new AccessTokenHandler($this->cache, $this->jsonFile, $this->logger);
+        $this->messaging = new Messaging($this->cache, $this->jsonFile, $this->logger);
     }
 
     public function tearDown(): void

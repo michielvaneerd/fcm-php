@@ -6,13 +6,10 @@ use Mve\Tests\MyBaseTestCase;
 
 class MessagingWithEnvTokenTest extends MyBaseTestCase
 {
-    private Messaging $messaging;
-
     public function setUp(): void
     {
         parent::setUp();
         $this->assertNotEmpty($this->tokens);
-        $this->messaging = new Messaging($this->accessTokenHandler, $this->logger);
     }
 
     /**
@@ -33,7 +30,7 @@ class MessagingWithEnvTokenTest extends MyBaseTestCase
             return new TokenMessage($id, $token, self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id", self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id");
         }, $this->tokens, array_keys($this->tokens));
         $sendResult = $this->messaging->sendAll($messages);
-        $this->assertEquals(count($this->tokens), count($sendResult->sent) + count($sendResult->unregistered) + count($sendResult->errors));
+        $this->assertEquals(count($this->tokens), count($sendResult->getSent()) + count($sendResult->getUnregistered()) + count($sendResult->getErrors()));
     }
 
     public function testSubscribeToTopic()

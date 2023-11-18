@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Mve\Tests\MyBaseTestCase;
 
@@ -9,8 +11,8 @@ class AccessTokenHandlerTest extends MyBaseTestCase
      */
     public function testGetTokenWithForceFromAPI(): void
     {
-        $this->assertNotEmpty($this->accessTokenHandler->getProjectId());
-        $accessToken = $this->accessTokenHandler->getToken(true);
+        $this->assertNotEmpty($this->messaging->getAccessTokenHandler()->getProjectId());
+        $accessToken = $this->messaging->getAccessTokenHandler()->getToken(true);
         $this->assertNotEmpty($accessToken);
     }
 
@@ -19,8 +21,8 @@ class AccessTokenHandlerTest extends MyBaseTestCase
      */
     public function testGetToken(): void
     {
-        $this->assertNotEmpty($this->accessTokenHandler->getProjectId());
-        $accessToken = $this->accessTokenHandler->getToken();
+        $this->assertNotEmpty($this->messaging->getAccessTokenHandler()->getProjectId());
+        $accessToken = $this->messaging->getAccessTokenHandler()->getToken();
         $this->assertNotEmpty($accessToken);
     }
 }

@@ -32,6 +32,13 @@ class MyTestCache implements CacheInterface
         file_put_contents(self::$cachePath, json_encode($json));
     }
 
+    public function forget(string $key): void
+    {
+        $json = $this->getCacheJson();
+        unset($json[$key]);
+        $this->putCacheJson($json);
+    }
+
     public function get(string $key): mixed
     {
         if (array_key_exists($key, self::$cache)) {
@@ -53,27 +60,9 @@ class MyTestCache implements CacheInterface
         $this->putCacheJson($json);
     }
 
-    public function pull(string $key): mixed
-    {
-        $json = $this->getCacheJson();
-        $value = $json[$key];
-        unset($json[$key]);
-        $this->putCacheJson($json);
-        return $value;
-    }
-
-    public function flush(): mixed
+    public function flush(): void
     {
         $this->putCacheJson([]);
         self::$cache = [];
-    }
-
-    public function has(string $key): bool
-    {
-        if (array_key_exists($key, self::$cache)) {
-            return true;
-        }
-        $json = $this->getCacheJson();
-        return array_key_exists($key, $json);
     }
 }
