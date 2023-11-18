@@ -146,31 +146,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Mve-FcmPhp-Models-FcmException.html#property_sendAllResult"
         },                {
-            "fqsen": "\\App\\Models\\LaravelCache",
-            "name": "LaravelCache",
-            "summary": "",
-            "url": "classes/App-Models-LaravelCache.html"
-        },                {
-            "fqsen": "\\App\\Models\\LaravelCache\u003A\u003Aget\u0028\u0029",
-            "name": "get",
-            "summary": "Gets\u0020a\u0020key\u0020from\u0020the\u0020cache.",
-            "url": "classes/App-Models-LaravelCache.html#method_get"
-        },                {
-            "fqsen": "\\App\\Models\\LaravelCache\u003A\u003Aput\u0028\u0029",
-            "name": "put",
-            "summary": "Puts\u0020a\u0020key\u0020into\u0020the\u0020cache.",
-            "url": "classes/App-Models-LaravelCache.html#method_put"
-        },                {
-            "fqsen": "\\App\\Models\\LaravelCache\u003A\u003Aforget\u0028\u0029",
-            "name": "forget",
-            "summary": "Removes\u0020an\u0020item\u0020from\u0020the\u0020cache.",
-            "url": "classes/App-Models-LaravelCache.html#method_forget"
-        },                {
-            "fqsen": "\\App\\Models\\LaravelCache\u003A\u003Aflush\u0028\u0029",
-            "name": "flush",
-            "summary": "Removes\u0020all\u0020items\u0020from\u0020the\u0020cache.",
-            "url": "classes/App-Models-LaravelCache.html#method_flush"
-        },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\Message",
             "name": "Message",
             "summary": "Abstract\u0020class\u0020for\u0020messages.",
@@ -390,15 +365,5 @@ Search.appendIndex(
             "name": "Mve",
             "summary": "",
             "url": "namespaces/mve.html"
-        },                {
-            "fqsen": "\\App\\Models",
-            "name": "Models",
-            "summary": "",
-            "url": "namespaces/app-models.html"
-        },                {
-            "fqsen": "\\App",
-            "name": "App",
-            "summary": "",
-            "url": "namespaces/app.html"
         }            ]
 );
