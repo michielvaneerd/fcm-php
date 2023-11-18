@@ -4,7 +4,7 @@ Send Google Firebase Cloud messages with PHP.
 
 ## API documentation
 
-See [API documentation](./apidoc/index.html)
+See [API documentation](https://michielvaneerd.github.io/fcm-php/)
 
 ## Getting started
 
