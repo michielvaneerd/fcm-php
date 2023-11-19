@@ -86,25 +86,40 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Mve-FcmPhp-Models-FcmError.html#method___construct"
         },                {
-            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNKNOWN",
-            "name": "ERROR_UNKNOWN",
-            "summary": "",
-            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNKNOWN"
-        },                {
-            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNAUTHENTICATED",
-            "name": "ERROR_UNAUTHENTICATED",
-            "summary": "",
-            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAUTHENTICATED"
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNREGISTERED",
+            "name": "ERROR_UNREGISTERED",
+            "summary": "HTTP\u0020status\u0020404\nUnregistered\u0020token.\u0020For\u0020example\u0020when\u0020user\u0020removes\u0020the\u0020app.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNREGISTERED"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_NOT_FOUND",
             "name": "ERROR_NOT_FOUND",
-            "summary": "",
+            "summary": "HTTP\u0020status\u0020404\nUnregistered\u0020token.\u0020For\u0020example\u0020when\u0020user\u0020removes\u0020the\u0020app.",
             "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_NOT_FOUND"
         },                {
-            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNREGISTERED",
-            "name": "ERROR_UNREGISTERED",
-            "summary": "",
-            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNREGISTERED"
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_INVALID_ARGUMENT",
+            "name": "ERROR_INVALID_ARGUMENT",
+            "summary": "HTTP\u0020status\u0020400\nFor\u0020example\u0020wrong\u0020format\u0020message\u0020or\u0020token.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_INVALID_ARGUMENT"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_QUOTA_EXCEEDED",
+            "name": "ERROR_QUOTA_EXCEEDED",
+            "summary": "HTTP\u0020status\u0020429\nFor\u0020example\u0020when\u0020the\u0020sending\u0020rate\u0020of\u0020messages\u0020is\u0020too\u0020high.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_QUOTA_EXCEEDED"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNAVAILABLE",
+            "name": "ERROR_UNAVAILABLE",
+            "summary": "HTTP\u0020status\u0020503\nThe\u0020server\u0020is\u0020overloaded.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAVAILABLE"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_UNAUTHENTICATED",
+            "name": "ERROR_UNAUTHENTICATED",
+            "summary": "HTTP\u0020status\u0020401\nInvalid\u0020access\u0020token,\u0020for\u0020example\u0020when\u0020it\u0020is\u0020expired.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAUTHENTICATED"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003AERROR_THIRD_PARTY_AUTH_ERROR",
+            "name": "ERROR_THIRD_PARTY_AUTH_ERROR",
+            "summary": "HTTP\u0020status\u0020401\nAPNs\u0020certificate\u0020or\u0020web\u0020push\u0020auth\u0020key\u0020was\u0020invalid\u0020or\u0020missing.",
+            "url": "classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_THIRD_PARTY_AUTH_ERROR"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError\u003A\u003A\u0024code",
             "name": "code",
@@ -226,6 +241,11 @@ Search.appendIndex(
             "summary": "Send\u0020multiple\u0020messages.",
             "url": "classes/Mve-FcmPhp-Models-Messaging.html#method_sendAll"
         },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\Messaging\u003A\u003AvalidateAll\u0028\u0029",
+            "name": "validateAll",
+            "summary": "Validate\u0020multiple\u0020messages.\u0020Can\u0020be\u0020used\u0020to\u0020check\u0020if\u0020tokens\u0020are\u0020still\u0020registered.",
+            "url": "classes/Mve-FcmPhp-Models-Messaging.html#method_validateAll"
+        },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\Messaging\u003A\u003A_sendAll\u0028\u0029",
             "name": "_sendAll",
             "summary": "Send\u0020multiple\u0020messages\u0020with\u0020an\u0020optional\u0020retry\u0020in\u0020case\u0020of\u0020expired\u0020access\u0020token.",
@@ -258,32 +278,32 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToSent\u0028\u0029",
             "name": "addToSent",
-            "summary": "",
+            "summary": "Add\u0020a\u0020successfully\u0020sent\u0020message\u0020to\u0020the\u0020result.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToSent"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToUnregistered\u0028\u0029",
             "name": "addToUnregistered",
-            "summary": "",
+            "summary": "Add\u0020an\u0020unregistered\u0020message\u0020to\u0020the\u0020result.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToUnregistered"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AaddToErrors\u0028\u0029",
             "name": "addToErrors",
-            "summary": "",
+            "summary": "Add\u0020a\u0020message\u0020that\u0020resulted\u0020in\u0020an\u0020error\u0020to\u0020the\u0020result.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToErrors"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetSent\u0028\u0029",
             "name": "getSent",
-            "summary": "",
+            "summary": "Get\u0020the\u0020sent\u0020message\u0020and\u0020Firebase\u0020Ids.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getSent"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetUnregistered\u0028\u0029",
             "name": "getUnregistered",
-            "summary": "",
+            "summary": "Get\u0020the\u0020messages\u0020with\u0020unregistered\u0020tokens.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getUnregistered"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003AgetErrors\u0028\u0029",
             "name": "getErrors",
-            "summary": "",
+            "summary": "Get\u0020the\u0020messages\u0020with\u0020errors.",
             "url": "classes/Mve-FcmPhp-Models-SendAllResult.html#method_getErrors"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\SendAllResult\u003A\u003A\u0024sent",

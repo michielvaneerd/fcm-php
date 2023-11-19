@@ -212,6 +212,24 @@ class Messaging
     }
 
     /**
+     * Validate multiple messages. Can be used to check if tokens are still registered.
+     * 
+     * @param array<TokenMessage> $tokenMessages A list of messages to validate.
+     * 
+     * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
+     * 
+     * @throws FcmException If we get a Google error.
+     * @throws \Exception For all other errors.
+     * 
+     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
+     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send
+     */
+    public function validateAll(array $tokenMessages): SendAllResult
+    {
+        return $this->_sendAll($tokenMessages, true);
+    }
+
+    /**
      * Send multiple messages with an optional retry in case of expired access token.
      * 
      * @param array<TokenMessage> $tokenMessages A list of messages to send.
@@ -224,7 +242,7 @@ class Messaging
      * 
      * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      */
-    private function _sendAll(array $tokenMessages, ?SendAllResult $sendAllResult = null): SendAllResult
+    private function _sendAll(array $tokenMessages, bool $validate = false, ?SendAllResult $sendAllResult = null): SendAllResult
     {
         $client = HttpClient::create();
         $sendMessagesUri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
@@ -245,9 +263,13 @@ class Messaging
             // The responses are lazy
             foreach ($tokenMessages as $message) {
                 $this->logger->debug("Send request to $sendMessagesUri for token {$message->getToken()}");
+                $body = $message->toArray();
+                if ($validate) {
+                    $body['validate_only'] = true;
+                }
                 $responses[] = $client->request('POST', $sendMessagesUri, [
                     'auth_bearer' => $bearerToken,
-                    'json' => $message->toArray()
+                    'json' => $body
                 ]);
             }
 
@@ -260,6 +282,7 @@ class Messaging
 
                 $code = $response->getStatusCode();
                 $content = $response->getContent(false);
+
                 $jsonResponse = null;
                 try {
                     $jsonResponse = $response->toArray(false);
@@ -278,7 +301,7 @@ class Messaging
                     if ($code === 404 && in_array($errorStatus, [FcmError::ERROR_UNREGISTERED, FcmError::ERROR_NOT_FOUND])) {
                         // These are tokens that have been unregistered and can safely be removed.
                         $sendAllResult->addToUnregistered($message->getId(), $fcmError);
-                    } elseif ($code === 401 && $error === FcmError::ERROR_UNAUTHENTICATED) {
+                    } elseif ($code === 401 && $errorStatus === FcmError::ERROR_UNAUTHENTICATED) {
                         // This means we have an expired access token, so try again but this time get a new access token from the Google API instead
                         // of using the one from the cache.
                         if ($withForceTokenFromApi) {
@@ -288,7 +311,7 @@ class Messaging
                             throw new FcmException($fcmError, $sendAllResult);
                         }
                         array_unshift($tokenMessages, $message); // Put back this last message we removed earlier, because we have to process this one again.
-                        return $this->_sendAll($tokenMessages, $sendAllResult);
+                        return $this->_sendAll($tokenMessages, $validate, $sendAllResult);
                     } else {
                         $this->logger->warning("Unknown API response with statuscode $code for {$message->getToken()}: " . $content);
                         $sendAllResult->addToErrors($message->getId(), $fcmError);

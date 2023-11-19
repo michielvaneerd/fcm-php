@@ -18,31 +18,55 @@ class SendAllResult
     {
     }
 
+    /**
+     * Add a successfully sent message to the result.
+     */
     public function addToSent(int $messageId, string $firebaseId): void
     {
         $this->sent[$messageId] = $firebaseId;
     }
 
+    /**
+     * Add an unregistered message to the result.
+     */
     public function addToUnregistered(int $messageId, FcmError $fcmError): void
     {
         $this->unregistered[$messageId] = $fcmError;
     }
 
+    /**
+     * Add a message that resulted in an error to the result.
+     */
     public function addToErrors(int $messageId, FcmError $fcmError): void
     {
         $this->errors[$messageId] = $fcmError;
     }
 
+    /**
+     * Get the sent message and Firebase Ids.
+     * 
+     * @return array<int, string> An array where the key is the message ID and the value the Firebase ID.
+     */
     public function getSent(): array
     {
         return $this->sent;
     }
 
+    /**
+     * Get the messages with unregistered tokens.
+     * 
+     * @return array<int, FcmError> An array where the key is the message ID and the value a FcmError.
+     */
     public function getUnregistered(): array
     {
         return $this->unregistered;
     }
 
+    /**
+     * Get the messages with errors.
+     * 
+     * @return array<int, FcmError> An array where the key is the message ID and the value a FcmError.
+     */
     public function getErrors(): array
     {
         return $this->errors;

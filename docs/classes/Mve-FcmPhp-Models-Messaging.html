@@ -224,6 +224,13 @@
 </dt>
 <dd>Unsubscribe tokens from topic.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Mve-FcmPhp-Models-Messaging.html#method_validateAll">validateAll()</a>
+    <span>
+                                &nbsp;: <a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a>    </span>
+</dt>
+<dd>Validate multiple messages. Can be used to check if tokens are still registered.</dd>
+
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/Mve-FcmPhp-Models-Messaging.html#method__sendAll">_sendAll()</a>
     <span>
@@ -916,6 +923,99 @@
                     <article
         class="phpdocumentor-element
             -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_validateAll">
+        validateAll()
+        <a href="classes/Mve-FcmPhp-Models-Messaging.html#method_validateAll" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/Messaging.php"><a href="files/src-models-messaging.html"><abbr title="src/Models/Messaging.php">Messaging.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">227</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Validate multiple messages. Can be used to check if tokens are still registered.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">validateAll</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/Mve-FcmPhp-Models-TokenMessage.html"><abbr title="\Mve\FcmPhp\Models\TokenMessage">TokenMessage</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tokenMessages</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a></span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$tokenMessages</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/Mve-FcmPhp-Models-TokenMessage.html"><abbr title="\Mve\FcmPhp\Models\TokenMessage">TokenMessage</abbr></a>&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>A list of messages to validate.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Mve-FcmPhp-Models-Messaging.html#method_validateAll#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmException.html"><abbr title="\Mve\FcmPhp\Models\FcmException">FcmException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>If we get a Google error.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>For all other errors.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices"> https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices </a>
+                    
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send"> https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send </a>
+                    
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a></span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>A SendAllResult result, which contains the sent, unregistered and error</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
             -private
                                                         "
 >
@@ -927,7 +1027,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/Messaging.php"><a href="files/src-models-messaging.html"><abbr title="src/Models/Messaging.php">Messaging.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">227</span>
+    <span class="phpdocumentor-element-found-in__line">245</span>
 
     </aside>
 
@@ -935,7 +1035,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">_sendAll</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/Mve-FcmPhp-Models-TokenMessage.html"><abbr title="\Mve\FcmPhp\Models\TokenMessage">TokenMessage</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tokenMessages</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sendAllResult</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">_sendAll</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/Mve-FcmPhp-Models-TokenMessage.html"><abbr title="\Mve\FcmPhp\Models\TokenMessage">TokenMessage</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tokenMessages</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$validate</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sendAllResult</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/Mve-FcmPhp-Models-SendAllResult.html"><abbr title="\Mve\FcmPhp\Models\SendAllResult">SendAllResult</abbr></a></span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -950,6 +1050,13 @@
                     <section class="phpdocumentor-description"><p>A list of messages to send.</p>
 </section>
 
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$validate</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$sendAllResult</span>
@@ -1225,6 +1332,7 @@
                                             <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method_sendToTopic">sendToTopic()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method_subscribeToTopic">subscribeToTopic()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method_unsubscribeFromTopic">unsubscribeFromTopic()</a></li>
+                                            <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method_validateAll">validateAll()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method__sendAll">_sendAll()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-Messaging.html#method_callWithRetryOnExpiredAccessToken">callWithRetryOnExpiredAccessToken()</a></li>
                                     </ul>

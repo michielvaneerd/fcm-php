@@ -119,7 +119,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">10</span>
+    <span class="phpdocumentor-element-found-in__line">13</span>
 
     </aside>
 
@@ -127,6 +127,27 @@
 
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Mve-FcmPhp-Models-FcmError.html#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode"> https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode </a>
+                    
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://cloud.google.com/resource-manager/docs/core_errors"> https://cloud.google.com/resource-manager/docs/core_errors </a>
+                    
+                                    </dd>
+                                            </dl>
 
 
 
@@ -149,28 +170,60 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_INVALID_ARGUMENT">ERROR_INVALID_ARGUMENT</a>
+    <span>
+        &nbsp;= &#039;INVALID_ARGUMENT&#039;                            </span>
+</dt>
+<dd>HTTP status 400
+For example wrong format message or token.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_NOT_FOUND">ERROR_NOT_FOUND</a>
     <span>
         &nbsp;= &#039;NOT_FOUND&#039;                            </span>
 </dt>
+<dd>HTTP status 404
+Unregistered token. For example when user removes the app.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_QUOTA_EXCEEDED">ERROR_QUOTA_EXCEEDED</a>
+    <span>
+        &nbsp;= &#039;QUOTA_EXCEEDED&#039;                            </span>
+</dt>
+<dd>HTTP status 429
+For example when the sending rate of messages is too high.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_THIRD_PARTY_AUTH_ERROR">ERROR_THIRD_PARTY_AUTH_ERROR</a>
+    <span>
+        &nbsp;= &#039;THIRD_PARTY_AUTH_ERROR&#039;                            </span>
+</dt>
+<dd>HTTP status 401
+APNs certificate or web push auth key was invalid or missing.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAUTHENTICATED">ERROR_UNAUTHENTICATED</a>
     <span>
         &nbsp;= &#039;UNAUTHENTICATED&#039;                            </span>
 </dt>
+<dd>HTTP status 401
+Invalid access token, for example when it is expired.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
-    <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNKNOWN">ERROR_UNKNOWN</a>
+    <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAVAILABLE">ERROR_UNAVAILABLE</a>
     <span>
-        &nbsp;= &#039;UNKNOWN&#039;                            </span>
+        &nbsp;= &#039;UNAVAILABLE&#039;                            </span>
 </dt>
+<dd>HTTP status 503
+The server is overloaded.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNREGISTERED">ERROR_UNREGISTERED</a>
     <span>
         &nbsp;= &#039;UNREGISTERED&#039;                            </span>
 </dt>
+<dd>HTTP status 404
+Unregistered token. For example when user removes the app.</dd>
 
     </dl>
 
@@ -232,6 +285,36 @@
 
         </h3>
                     <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_ERROR_INVALID_ARGUMENT">
+        ERROR_INVALID_ARGUMENT
+        <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_INVALID_ARGUMENT" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">31</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">HTTP status 400
+For example wrong format message or token.</p>
+
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">ERROR_INVALID_ARGUMENT</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;INVALID_ARGUMENT&#039;</span>
+</code>
+
+
+    
+    
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_ERROR_NOT_FOUND">
         ERROR_NOT_FOUND
         <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_NOT_FOUND" class="headerlink"><i class="fas fa-link"></i></a>
@@ -241,16 +324,78 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">HTTP status 404
+Unregistered token. For example when user removes the app.</p>
+
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">mixed</span>
     <span class="phpdocumentor-signature__name">ERROR_NOT_FOUND</span>
     = <span class="phpdocumentor-signature__default-value">&#039;NOT_FOUND&#039;</span>
+</code>
+
+
+    
+    
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_ERROR_QUOTA_EXCEEDED">
+        ERROR_QUOTA_EXCEEDED
+        <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_QUOTA_EXCEEDED" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">37</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">HTTP status 429
+For example when the sending rate of messages is too high.</p>
+
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">ERROR_QUOTA_EXCEEDED</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;QUOTA_EXCEEDED&#039;</span>
+</code>
+
+
+    
+    
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_ERROR_THIRD_PARTY_AUTH_ERROR">
+        ERROR_THIRD_PARTY_AUTH_ERROR
+        <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_THIRD_PARTY_AUTH_ERROR" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">55</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">HTTP status 401
+APNs certificate or web push auth key was invalid or missing.</p>
+
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">ERROR_THIRD_PARTY_AUTH_ERROR</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;THIRD_PARTY_AUTH_ERROR&#039;</span>
 </code>
 
 
@@ -269,11 +414,13 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">14</span>
+    <span class="phpdocumentor-element-found-in__line">49</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">HTTP status 401
+Invalid access token, for example when it is expired.</p>
+
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">mixed</span>
@@ -288,25 +435,27 @@
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
-    <h4 class="phpdocumentor-element__name" id="constant_ERROR_UNKNOWN">
-        ERROR_UNKNOWN
-        <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNKNOWN" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="constant_ERROR_UNAVAILABLE">
+        ERROR_UNAVAILABLE
+        <a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAVAILABLE" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">13</span>
+    <span class="phpdocumentor-element-found-in__line">43</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">HTTP status 503
+The server is overloaded.</p>
+
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">ERROR_UNKNOWN</span>
-    = <span class="phpdocumentor-signature__default-value">&#039;UNKNOWN&#039;</span>
+    <span class="phpdocumentor-signature__name">ERROR_UNAVAILABLE</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;UNAVAILABLE&#039;</span>
 </code>
 
 
@@ -325,11 +474,13 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">HTTP status 404
+Unregistered token. For example when user removes the app.</p>
+
     <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">mixed</span>
@@ -369,7 +520,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -402,7 +553,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -435,7 +586,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -468,7 +619,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -506,7 +657,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/FcmError.php"><a href="files/src-models-fcmerror.html"><abbr title="src/Models/FcmError.php">FcmError.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -675,9 +826,12 @@
                             <li class="phpdocumentor-on-this-page-section__title">Constants</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_INVALID_ARGUMENT">ERROR_INVALID_ARGUMENT</a></li>
                                                     <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_NOT_FOUND">ERROR_NOT_FOUND</a></li>
+                                                    <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_QUOTA_EXCEEDED">ERROR_QUOTA_EXCEEDED</a></li>
+                                                    <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_THIRD_PARTY_AUTH_ERROR">ERROR_THIRD_PARTY_AUTH_ERROR</a></li>
                                                     <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAUTHENTICATED">ERROR_UNAUTHENTICATED</a></li>
-                                                    <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNKNOWN">ERROR_UNKNOWN</a></li>
+                                                    <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNAVAILABLE">ERROR_UNAVAILABLE</a></li>
                                                     <li><a href="classes/Mve-FcmPhp-Models-FcmError.html#constant_ERROR_UNREGISTERED">ERROR_UNREGISTERED</a></li>
                                             </ul>
                 </li>

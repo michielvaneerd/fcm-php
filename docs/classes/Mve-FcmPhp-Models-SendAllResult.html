@@ -187,36 +187,42 @@
     <span>
                                 &nbsp;: void    </span>
 </dt>
+<dd>Add a message that resulted in an error to the result.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToSent">addToSent()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
+<dd>Add a successfully sent message to the result.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Mve-FcmPhp-Models-SendAllResult.html#method_addToUnregistered">addToUnregistered()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
+<dd>Add an unregistered message to the result.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Mve-FcmPhp-Models-SendAllResult.html#method_getErrors">getErrors()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;    </span>
 </dt>
+<dd>Get the messages with errors.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Mve-FcmPhp-Models-SendAllResult.html#method_getSent">getSent()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;int, string&gt;    </span>
 </dt>
+<dd>Get the sent message and Firebase Ids.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Mve-FcmPhp-Models-SendAllResult.html#method_getUnregistered">getUnregistered()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;    </span>
 </dt>
+<dd>Get the messages with unregistered tokens.</dd>
 
     </dl>
 
@@ -414,11 +420,12 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">40</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Add a message that resulted in an error to the result.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">addToErrors</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$messageId</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fcmError</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
@@ -462,11 +469,12 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">24</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Add a successfully sent message to the result.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">addToSent</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$messageId</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$firebaseId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
@@ -510,11 +518,12 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">32</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Add an unregistered message to the result.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">addToUnregistered</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$messageId</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fcmError</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
@@ -558,14 +567,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">46</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Get the messages with errors.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getErrors</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getErrors</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -575,7 +585,11 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>An array where the key is the message ID and the value a FcmError.</p>
+</section>
+
             </section>
 
 </article>
@@ -593,14 +607,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">50</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Get the sent message and Firebase Ids.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getSent</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getSent</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, string&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -610,7 +625,11 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, string&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>An array where the key is the message ID and the value the Firebase ID.</p>
+</section>
+
             </section>
 
 </article>
@@ -628,14 +647,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/SendAllResult.php"><a href="files/src-models-sendallresult.html"><abbr title="src/Models/SendAllResult.php">SendAllResult.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">60</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Get the messages with unregistered tokens.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getUnregistered</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getUnregistered</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -645,7 +665,11 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/Mve-FcmPhp-Models-FcmError.html"><abbr title="\Mve\FcmPhp\Models\FcmError">FcmError</abbr></a>&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>An array where the key is the message ID and the value a FcmError.</p>
+</section>
+
             </section>
 
 </article>

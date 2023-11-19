@@ -34,28 +34,19 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
         $this->messaging->getInfo(self::INVALID_TOKEN, true);
     }
 
-    public function testSendUnregisteredToken()
+    public function testSendAll()
     {
-        $token = self::CORRECTLY_FORMATTED_TOKEN;
         $messages = [
-            new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
+            new TokenMessage(1, self::CORRECTLY_FORMATTED_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
+            new TokenMessage(2, self::INVALID_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
         ];
         $sendResult = $this->messaging->sendAll($messages);
         $unregistered = $sendResult->getUnregistered();
-        $this->assertCount(1, $unregistered);
-        $this->assertInstanceOf(FcmError::class, $unregistered[1]);
-    }
-
-    public function testSendInvalidToken()
-    {
-        $token = self::INVALID_TOKEN;
-        $messages = [
-            new TokenMessage(1, $token, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE)
-        ];
-        $sendResult = $this->messaging->sendAll($messages);
         $errors = $sendResult->getErrors();
+        $this->assertCount(1, $unregistered);
         $this->assertCount(1, $errors);
-        $this->assertInstanceOf(FcmError::class, $errors[1]);
+        $this->assertInstanceOf(FcmError::class, $unregistered[1]);
+        $this->assertInstanceOf(FcmError::class, $errors[2]);
     }
 
     public function testSendToTopic()
@@ -65,4 +56,18 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
         $this->assertTrue($result);
     }
 
+    public function testValidateAll()
+    {
+        $messages = [
+            new TokenMessage(1, self::CORRECTLY_FORMATTED_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
+            new TokenMessage(2, self::INVALID_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
+        ];
+        $sendResult = $this->messaging->validateAll($messages);
+        $unregistered = $sendResult->getUnregistered();
+        $errors = $sendResult->getErrors();
+        $this->assertCount(1, $unregistered);
+        $this->assertCount(1, $errors);
+        $this->assertInstanceOf(FcmError::class, $unregistered[1]);
+        $this->assertInstanceOf(FcmError::class, $errors[2]);
+    }
 }
