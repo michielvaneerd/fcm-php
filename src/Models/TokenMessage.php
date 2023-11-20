@@ -12,7 +12,7 @@ class TokenMessage extends Message
     /**
      * @param string $token The registration token.
      */
-    function __construct(private int $id, private string $token, private string $body, private string $title)
+    function __construct(protected int $id, protected string $token, protected string $body, protected string $title)
     {
         parent::__construct($id, $body, $title);
     }

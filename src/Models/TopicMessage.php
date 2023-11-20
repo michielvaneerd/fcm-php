@@ -12,7 +12,7 @@ class TopicMessage extends Message
     /**
      * @param string $topic The topic.
      */
-    function __construct(private int $id, private string $topic, private string $body, private string $title)
+    function __construct(protected int $id, protected string $topic, protected string $body, protected string $title)
     {
         parent::__construct($id, $body, $title);
     }

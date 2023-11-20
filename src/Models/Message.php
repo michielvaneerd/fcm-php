@@ -15,7 +15,7 @@ abstract class Message
      * @param string $body The message body content.
      * @param string $title The message title.
      */
-    function __construct(private int $id, private string $body, private string $title)
+    function __construct(protected int $id, protected string $body, protected string $title)
     {
     }
 
