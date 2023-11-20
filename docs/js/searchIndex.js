@@ -16,10 +16,25 @@ Search.appendIndex(
             "summary": "Returns\u0020a\u0020non\u0020expired\u0020access\u0020token\u0020from\u0020the\u0020cache,\u0020or\u0020if\u0020there\u0020isn\u0027t\u0020one,\u0020from\u0020the\u0020Google\u0020API\u0020and\u0020stores\u0020this\u0020one\u0020in\u0020the\u0020cache.",
             "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_getToken"
         },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003AfetchTokenFromGoogleAPI\u0028\u0029",
+            "name": "fetchTokenFromGoogleAPI",
+            "summary": "Requests\u0020an\u0020access\u0020token\u0020from\u0020the\u0020Google\u0020API.",
+            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_fetchTokenFromGoogleAPI"
+        },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003AgetProjectId\u0028\u0029",
             "name": "getProjectId",
             "summary": "Returns\u0020the\u0020project\u0020ID.",
             "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_getProjectId"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003Abase64EncodeUrl\u0028\u0029",
+            "name": "base64EncodeUrl",
+            "summary": "Returns\u0020a\u0020base64\u0020encoded\u0020URL\u0020safe\u0020string.",
+            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_base64EncodeUrl"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003AgenerateJWT\u0028\u0029",
+            "name": "generateJWT",
+            "summary": "Generates\u0020a\u0020JWT\u0020token\u0020that\u0020we\u0020need\u0020to\u0020request\u0020an\u0020access\u0020token.",
+            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_generateJWT"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003ACACHE_ACCESS_TOKEN_NAME",
             "name": "CACHE_ACCESS_TOKEN_NAME",
@@ -31,15 +46,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#constant_SCOPE_FIREBASE_MESSAGING"
         },                {
-            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003A\u0024fetchAuthToken",
-            "name": "fetchAuthToken",
+            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003A\u0024serviceAccount",
+            "name": "serviceAccount",
             "summary": "",
-            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_fetchAuthToken"
-        },                {
-            "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003A\u0024projectId",
-            "name": "projectId",
-            "summary": "",
-            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_projectId"
+            "url": "classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_serviceAccount"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\AccessTokenHandler\u003A\u003A\u0024cache",
             "name": "cache",
@@ -75,6 +85,11 @@ Search.appendIndex(
             "name": "forget",
             "summary": "Removes\u0020an\u0020item\u0020from\u0020the\u0020cache.",
             "url": "classes/Mve-FcmPhp-Models-CacheInterface.html#method_forget"
+        },                {
+            "fqsen": "\\Mve\\FcmPhp\\Models\\FcmClientException",
+            "name": "FcmClientException",
+            "summary": "Exception\u0020that\u0020originated\u0020on\u0020the\u0020client\u0020\u0028in\u0020this\u0020case\u0020the\u0020server\u0020that\u0020uses\u0020this\u0020library\u0029.\u0020So\u0020it\u0020has\u0020nothing\u0020to\u0020do\u0020with\u0020the\u0020Google\u0020API.",
+            "url": "classes/Mve-FcmPhp-Models-FcmClientException.html"
         },                {
             "fqsen": "\\Mve\\FcmPhp\\Models\\FcmError",
             "name": "FcmError",

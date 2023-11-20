@@ -41,18 +41,15 @@ class MyBaseTestCase extends TestCase
         $this->jsonFile = (string)getenv('JSON_FILE');
         $this->assertNotEmpty($this->jsonFile, 'Environment variable JSON_FILE is empty');
         $this->assertFileExists($this->jsonFile, 'File ' . $this->jsonFile . ' does not exist');
-        $this->logger->debug('Setup test with JSON_FILE = ' . $this->jsonFile);
 
         $this->cache = new MyTestCache();
         if (!empty(getenv('ACCESS_TOKEN'))) {
             $this->cache->put(AccessTokenHandler::CACHE_ACCESS_TOKEN_NAME, (string)getenv('ACCESS_TOKEN'));
-            $this->logger->debug('Setup test with ACCESS_TOKEN = ' . getenv('ACCESS_TOKEN'));
         }
 
         $this->tokens = [];
         $envTokens = trim((string)getenv('TOKENS')); // Firebase registration token, this way we can add one valid token.
         if (!empty($envTokens)) {
-            $this->logger->debug('Setup test with TOKENS = ' . $envTokens);
             $this->tokens = array_map(function ($token) {
                 return trim($token);
             }, explode(',', $envTokens));

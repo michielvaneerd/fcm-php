@@ -119,7 +119,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">14</span>
+    <span class="phpdocumentor-element-found-in__line">15</span>
 
     </aside>
 
@@ -176,21 +176,15 @@
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_fetchAuthToken">$fetchAuthToken</a>
-    <span>
-                        &nbsp;: <abbr title="\Google\Auth\FetchAuthTokenInterface">FetchAuthTokenInterface</abbr>            </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_logger">$logger</a>
     <span>
                         &nbsp;: <abbr title="\Psr\Log\LoggerInterface">LoggerInterface</abbr>|null            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_projectId">$projectId</a>
+    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_serviceAccount">$serviceAccount</a>
     <span>
-                        &nbsp;: string            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 
     </dl>
@@ -221,6 +215,27 @@
 </dt>
 <dd>Returns a non expired access token from the cache, or if there isn&#039;t one, from the Google API and stores this one in the cache.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_base64EncodeUrl">base64EncodeUrl()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Returns a base64 encoded URL safe string.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_fetchTokenFromGoogleAPI">fetchTokenFromGoogleAPI()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Requests an access token from the Google API.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_generateJWT">generateJWT()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Generates a JWT token that we need to request an access token.</dd>
+
     </dl>
 
 
@@ -243,7 +258,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
@@ -271,7 +286,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
@@ -315,7 +330,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -324,39 +339,6 @@
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type"><a href="classes/Mve-FcmPhp-Models-CacheInterface.html"><abbr title="\Mve\FcmPhp\Models\CacheInterface">CacheInterface</abbr></a></span>
     <span class="phpdocumentor-signature__name">$cache</span>
-    </code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_fetchAuthToken">
-        $fetchAuthToken
-        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_fetchAuthToken" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">16</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type"><abbr title="\Google\Auth\FetchAuthTokenInterface">FetchAuthTokenInterface</abbr></span>
-    <span class="phpdocumentor-signature__name">$fetchAuthToken</span>
     </code>
 
     
@@ -381,7 +363,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">32</span>
 
     </aside>
 
@@ -404,9 +386,9 @@
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="property_projectId">
-        $projectId
-        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_projectId" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_serviceAccount">
+        $serviceAccount
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_serviceAccount" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                 </span>
@@ -414,15 +396,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$projectId</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$serviceAccount</span>
     </code>
 
     
@@ -452,7 +434,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">29</span>
 
     </aside>
 
@@ -513,7 +495,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">69</span>
+    <span class="phpdocumentor-element-found-in__line">130</span>
 
     </aside>
 
@@ -549,7 +531,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">46</span>
+    <span class="phpdocumentor-element-found-in__line">79</span>
 
     </aside>
 
@@ -576,6 +558,43 @@
             </dl>
 
     
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_getToken#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmClientException.html"><abbr title="\Mve\FcmPhp\Models\FcmClientException">FcmClientException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case we cannot generate a JWT token.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmException.html"><abbr title="\Mve\FcmPhp\Models\FcmException">FcmException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case the Google API returns a valid error JSON response.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case of another error.</p>
+</section>
+
+                                    </dd>
+                                            </dl>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -584,6 +603,196 @@
                 <section class="phpdocumentor-description"><p>A non expired access token that can be used to authenticate the API calls.</p>
 </section>
 
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_base64EncodeUrl">
+        base64EncodeUrl()
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_base64EncodeUrl" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">138</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns a base64 encoded URL safe string.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">base64EncodeUrl</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$data</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_fetchTokenFromGoogleAPI">
+        fetchTokenFromGoogleAPI()
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_fetchTokenFromGoogleAPI" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">105</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Requests an access token from the Google API.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">fetchTokenFromGoogleAPI</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_fetchTokenFromGoogleAPI#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmClientException.html"><abbr title="\Mve\FcmPhp\Models\FcmClientException">FcmClientException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case we cannot generate a JWT token.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmException.html"><abbr title="\Mve\FcmPhp\Models\FcmException">FcmException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>When we don't get a 200 status code back.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case of some other error, for example if the server doesn't return valid JSON.</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Array of the response. Contains the 'access_token' and 'expires_in' fields.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_generateJWT">
+        generateJWT()
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_generateJWT" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Models/AccessTokenHandler.php"><a href="files/src-models-accesstokenhandler.html"><abbr title="src/Models/AccessTokenHandler.php">AccessTokenHandler.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">151</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Generates a JWT token that we need to request an access token.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">generateJWT</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_generateJWT#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://developers.google.com/identity/protocols/oauth2/service-account"> https://developers.google.com/identity/protocols/oauth2/service-account </a>
+                    
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://stackoverflow.com/questions/74192530/generating-access-token-for-firebase-messaging/75591963#75591963"> https://stackoverflow.com/questions/74192530/generating-access-token-for-firebase-messaging/75591963#75591963 </a>
+                    
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/Mve-FcmPhp-Models-FcmClientException.html"><abbr title="\Mve\FcmPhp\Models\FcmClientException">FcmClientException</abbr></a></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>In case we cannot sign the token.</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
             </section>
 
 </article>
@@ -709,9 +918,8 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                                                     <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_cache">$cache<a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html"></li>
-                                                    <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_fetchAuthToken">$fetchAuthToken<a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html"></li>
                                                     <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_logger">$logger<a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html"></li>
-                                                    <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_projectId">$projectId<a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html"></li>
+                                                    <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#property_serviceAccount">$serviceAccount<a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html"></li>
                                             </ul>
                 </li>
             
@@ -721,6 +929,9 @@
                                             <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method___construct">__construct()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_getProjectId">getProjectId()</a></li>
                                             <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_getToken">getToken()</a></li>
+                                            <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_base64EncodeUrl">base64EncodeUrl()</a></li>
+                                            <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_fetchTokenFromGoogleAPI">fetchTokenFromGoogleAPI()</a></li>
+                                            <li><a href="classes/Mve-FcmPhp-Models-AccessTokenHandler.html#method_generateJWT">generateJWT()</a></li>
                                     </ul>
             </li>
                     </ul>

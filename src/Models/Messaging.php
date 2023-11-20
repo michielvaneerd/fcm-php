@@ -46,6 +46,10 @@ class Messaging
      * @param bool $retry If this is the retry phase.
      * 
      * @return ResponseInterface The ResponseInterface instance.
+     * 
+     * @throws FcmClientException In case we cannot generate a JWT token. This is always fatal and we cannot fix this without making changes to the code or to the downloaded service account private key.
+     * @throws FcmException In case of a Google API error, like an invalid request for the access token.
+     * @throws \Exception In case of some other error.
      */
     private function callWithRetryOnExpiredAccessToken(
         string $uri,
@@ -56,7 +60,6 @@ class Messaging
     ): ResponseInterface {
         $client = HttpClient::create();
         $bearerToken = $this->accessTokenHandler->getToken($retry);
-        $this->logger->debug("Send $method request to $uri for json " . json_encode($json));
         $options = [
             'auth_bearer' => $bearerToken,
             'headers' => [
@@ -71,7 +74,7 @@ class Messaging
         }
         $response = $client->request($method, $uri, $options);
         $statusCode = $response->getStatusCode();
-        $this->logger->notice("Response with status $statusCode: " . $response->getContent(false));
+        $this->logger->debug("Response for $method request to $uri with status $statusCode: " . $response->getContent(false));
         if ($statusCode === 401) {
             if ($retry) {
                 $error = FcmError::ERROR_UNAUTHENTICATED;
@@ -125,7 +128,7 @@ class Messaging
         if ($code === 200) {
             return $json;
         } else {
-            throw new FcmException(new FcmError($code, $json['error'], '', $response->getContent(false)));
+            throw new FcmException(new FcmError($code, $json['error'], $json['message'] ?? '', $response->getContent(false)));
         }
     }
 
@@ -201,6 +204,7 @@ class Messaging
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
+     * @throws FcmClientException In case we cannot generate a JWT token.
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
@@ -218,6 +222,7 @@ class Messaging
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
+     * @throws FcmClientException In case we cannot generate a JWT token.
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
@@ -237,6 +242,7 @@ class Messaging
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
+     * @throws FcmClientException In case we cannot generate a JWT token.
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 

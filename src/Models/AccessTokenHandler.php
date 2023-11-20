@@ -31,12 +31,13 @@ class AccessTokenHandler
         string $jsonFile,
         private readonly ?LoggerInterface $logger
     ) {
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $jsonFile);
         $this->serviceAccount = json_decode(file_get_contents($jsonFile), true);
+        // Below is using the Google library so disabled for now.
+        //putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $jsonFile);
         //this->fetchAuthToken = ApplicationDefaultCredentials::getCredentials(self::SCOPE_FIREBASE_MESSAGING);
     }
 
-    // This makes use of the Google API library, below we do this on our own.
+    // This makes use of the Google API library, so disabled for now as below we do this on our own.
     // /**
     //  * Returns a non expired access token from the cache, or if there isn't one, from the Google API and stores this one in the cache.
     //  * 
@@ -71,7 +72,9 @@ class AccessTokenHandler
      * 
      * @return string A non expired access token that can be used to authenticate the API calls.
      * 
-     * @throws \Exception When we cannot create the JWT token or when the Google API returns an error.
+     * @throws FcmClientException In case we cannot generate a JWT token.
+     * @throws FcmException In case the Google API returns a valid error JSON response.
+     * @throws \Exception In case of another error.
      */
     public function getToken(bool $forceFromApi = false): string
     {
@@ -79,6 +82,7 @@ class AccessTokenHandler
         if (empty($token)) {
 
             $response = $this->fetchTokenFromGoogleAPI();
+
             $token = $response['access_token'];
 
             $this->logger->debug('Got access token from Google API: ' . $token); // Note you should have DISABLED 'debug' log level in production or test!
@@ -94,7 +98,9 @@ class AccessTokenHandler
      * 
      * @return array Array of the response. Contains the 'access_token' and 'expires_in' fields.
      * 
-     * @throws \Exception When we don't get a 200 status code back.
+     * @throws FcmClientException In case we cannot generate a JWT token.
+     * @throws FcmException When we don't get a 200 status code back.
+     * @throws \Exception In case of some other error, for example if the server doesn't return valid JSON.
      */
     private function fetchTokenFromGoogleAPI(): array
     {
@@ -102,15 +108,20 @@ class AccessTokenHandler
         $uri = 'https://oauth2.googleapis.com/token';
         $client = HttpClient::create();
         $response = $client->request('POST', $uri, [
-            // TODO: Do we have to urlencode here or is this done by HttpClient?
             'body' => [
                 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                 'assertion' => $jwt
             ]
         ]);
-        $this->logger->debug("Requests access token from $uri...");
-        // This will throw an exception if we didn't get a 200 response. So handle this in the caller.
-        return $response->toArray();
+        $code = $response->getStatusCode();
+        $content = $response->getContent(false);
+        $json = $response->toArray(false);
+        if (array_key_exists('error', $json)) {
+            // See: https://developers.google.com/identity/protocols/oauth2/service-account#error-codes
+            $this->logger->error($content);
+            throw new FcmException(new FcmError($code, $json['error'], $json['error_description'], $content));
+        }
+        return $json;
     }
 
     /**
@@ -121,6 +132,9 @@ class AccessTokenHandler
         return $this->serviceAccount['project_id'];
     }
 
+    /**
+     * Returns a base64 encoded URL safe string.
+     */
     private function base64EncodeUrl(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
@@ -131,6 +145,8 @@ class AccessTokenHandler
      * 
      * @link https://developers.google.com/identity/protocols/oauth2/service-account
      * @link https://stackoverflow.com/questions/74192530/generating-access-token-for-firebase-messaging/75591963#75591963
+     * 
+     * @throws FcmClientException In case we cannot sign the token.
      */
     private function generateJWT(): string
     {
@@ -156,8 +172,7 @@ class AccessTokenHandler
 
         $privateKey = openssl_get_privatekey($this->serviceAccount['private_key']);
         if (!openssl_sign($toSign, $signature, $privateKey, OPENSSL_ALGO_SHA256)) {
-            // TODO: create specific exception for this error? This is fatal, so should be treated as such.
-            throw new \Exception('Cannot sign JWT token', 401);
+            throw new FcmClientException('Cannot sign JWT token', 401);
         }
         $signatureEncoded = $this->base64EncodeUrl($signature);
 
