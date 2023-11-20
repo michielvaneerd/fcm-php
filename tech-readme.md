@@ -20,3 +20,7 @@
 - https://cloud.google.com/resource-manager/docs/core_errors - Core errors
 - https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode - Specific FCM error codes (can override the core errors)
 - https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances - Specific error codes for topic management
+
+## Authentication
+
+- https://developers.google.com/identity/protocols/oauth2/service-account - How to request for access tokens yourself without using a Google library. This involves creating JWT tokens and cryptographically signing.

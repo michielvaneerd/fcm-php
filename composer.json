@@ -22,7 +22,6 @@
     "require": {
         "php": ">=8.1",
         "symfony/http-client": "^6.3",
-        "google/auth": "^1.32",
         "psr/log": "^3.0"
     },
     "require-dev": {
