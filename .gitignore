@@ -1,0 +1,5 @@
+/vendor/
+/tests/debug.log
+/tests/cache.json
+/tests/init-tests.sh
+/.phpdoc/cache/

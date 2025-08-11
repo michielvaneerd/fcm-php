@@ -1,0 +1,32 @@
+{
+    "name": "mve/fcm-php",
+    "description": "Send Google Firebase Cloud messages",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mve\\FcmPhp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mve\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Michiel van Eerd",
+            "email": "michiel.vaneerd@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "symfony/http-client": "^6.3",
+        "psr/log": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.4",
+        "mockery/mockery": "^1.6",
+        "monolog/monolog": "^3.5"
+    }
+}
