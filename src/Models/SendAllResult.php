@@ -14,9 +14,7 @@ class SendAllResult
      * @param array<int, FcmError> $unregistered Messages that were sent to tokens that have been unregistered and can therefore be safely removed. The key is the message ID and the value is a FcmError.
      * @param array<int, FcmError> $errors Messages that resulted in errors. The key is the message ID and the value is a FcmError.
      */
-    function __construct(private array $sent = [], private array $unregistered = [], private array $errors = [])
-    {
-    }
+    function __construct(private array $sent = [], private array $unregistered = [], private array $errors = []) {}
 
     /**
      * Add a successfully sent message to the result.
@@ -71,5 +69,4 @@ class SendAllResult
     {
         return $this->errors;
     }
-
 }

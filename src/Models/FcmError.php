@@ -23,7 +23,7 @@ class FcmError
      * Unregistered token. For example when user removes the app.
      */
     public const ERROR_NOT_FOUND = 'NOT_FOUND';
-    
+
     /**
      * HTTP status 400
      * For example wrong format message or token.
@@ -60,8 +60,5 @@ class FcmError
      * @param string $message A description of the error.
      * @param string $content The raw content of the Google API response.
      */
-    function __construct(public readonly int $code, public readonly string $error, public readonly string $message, public readonly string $content)
-    {
-    }
-
+    function __construct(public readonly int $code, public readonly string $error, public readonly string $message, public readonly string $content) {}
 }
