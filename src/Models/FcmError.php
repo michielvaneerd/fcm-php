@@ -14,19 +14,19 @@ class FcmError
 {
     /**
      * HTTP status 404
-     * Unregistered token. For example when user removes the app.
+     * Unregistered token or FID. For example when user removes the app.
      */
     public const ERROR_UNREGISTERED = 'UNREGISTERED';
 
     /**
      * HTTP status 404
-     * Unregistered token. For example when user removes the app.
+     * Unregistered token or FID. For example when user removes the app.
      */
     public const ERROR_NOT_FOUND = 'NOT_FOUND';
 
     /**
      * HTTP status 400
-     * For example wrong format message or token.
+     * For example wrong format message, token or FID.
      */
     public const ERROR_INVALID_ARGUMENT = 'INVALID_ARGUMENT';
 

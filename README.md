@@ -33,9 +33,12 @@ The `sendAll` method uses HTTP/2 multiplexing. It's very fast and can be used to
 
 ```php
 // Create messages. The first argument is the ID - this can be used to map the result to the specific message after sending.
+// Firebase deprecated sending with a token (TokenMessage) and the preferred way is now using the FID (FIDMessage).
+// Currently both are still supported.
 $messages = [
     new TokenMessage(1, 'token1', "Content of notification", "Title of notification"),
-    new TokenMessage(2, 'token1', "Content of notification", "Title of notification")
+    new TokenMessage(2, 'token1', "Content of notification", "Title of notification"),
+    new FIDMessage(3, 'fid1', "Content of notification", "Title of notification")
 ];
 // Send the messages
 try {
@@ -44,7 +47,7 @@ try {
         // Successfully sent messages
     }
     foreach ($sendResult->getUnregistered() as $messageId => $fcmError) {
-        // The tokens for these messages can be deleted safely.
+        // The tokens/FIDs for these messages can be deleted safely.
     }
     foreach ($sendResult->getErrors() as $messageId => $fcmError) {
         // See the $fcmError for specifics about this error.
@@ -68,6 +71,10 @@ If you want to test one or more valid registration tokens, set then to the `TOKE
 
 `export TOKENS="token1, token2"`
 
+If you want to test one or more valid FIDs, set then to the `FIDS` environment variable:
+
+`export FIDS="fid1, fid2"`
+
 If you already have an access token that you want to use during the tests, you can set it with:
 
 `export ACCESS_TOKEN="my-access-token"`
@@ -84,6 +91,12 @@ This will test some invalid tokens.
 
 `./vendor/bin/phpunit tests/MessagingWithoutEnvTokenTest.php`
 
+### Test invalid FIDs
+
+This will test some FIDs.
+
+`./vendor/bin/phpunit tests/MessagingWithoutEnvFIDTest.php`
+
 ### Test valid registration tokens
 
 This will test one or more valid tokens.
@@ -91,3 +104,11 @@ This will test one or more valid tokens.
 Only works if you have set the `TOKENS` environment variable.
 
 `./vendor/bin/phpunit tests/MessagingWithEnvTokenTest.php`
+
+### Test valid FIDs
+
+This will test one or more valid FIDs.
+
+Only works if you have set the `FIDS` environment variable.
+
+`./vendor/bin/phpunit tests/MessagingWithEnvFIDTest.php`
