@@ -16,7 +16,7 @@ class FcmException extends \Exception
     public function __construct(
         public readonly FcmError $fcmError,
         public readonly ?SendAllResult $sendAllResult = null,
-        \Throwable $previous = null
+        ?\Throwable $previous = null
     ) {
         parent::__construct($this->fcmError->message, $this->fcmError->code, $previous);
     }

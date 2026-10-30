@@ -56,6 +56,7 @@ class Messaging
         string $method = 'POST',
         ?array $json = null,
         ?array $headers = null,
+        ?array $queryParameters = null,
         bool $retry = false
     ): ResponseInterface {
         $client = HttpClient::create();
@@ -71,6 +72,9 @@ class Messaging
         }
         if (!empty($json)) {
             $options['json'] = $json;
+        }
+        if (!empty($queryParameters)) {
+            $options['query'] = $queryParameters;
         }
         $response = $client->request($method, $uri, $options);
         $statusCode = $response->getStatusCode();
@@ -94,7 +98,7 @@ class Messaging
                 }
                 throw new FcmException(new FcmError($statusCode, $error, $message, $response->getContent(false)));
             } else {
-                return $this->callWithRetryOnExpiredAccessToken($uri, $method, $json, $headers, true);
+                return $this->callWithRetryOnExpiredAccessToken($uri, $method, $json, $headers, $queryParameters, true);
             }
         }
         return $response;
@@ -104,7 +108,7 @@ class Messaging
      * Gets info about a specific token.
      * 
      * @param string $token The registration token.
-     * @param string $details If we want more details for this token, like the topics for this token.
+     * @param bool $details If we want more details for this token, like the topics for this token.
      * 
      * @return array JSON response.
      * 
@@ -116,13 +120,10 @@ class Messaging
     public function getInfo(string $token, bool $details = false): array
     {
         $uri = 'https://iid.googleapis.com/iid/info/' . $token;
-        if ($details) {
-            $uri .= "?details=true";
-        }
         $headers = [
             'access_token_auth' => 'true',
         ];
-        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'GET', null, $headers);
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'GET', null, $headers, !empty($details) ? ['details' => true] : null);
         $code = $response->getStatusCode();
         $json = $response->toArray(false);
         if ($code === 200) {
@@ -135,7 +136,7 @@ class Messaging
     /**
      * Sends a message to a topic
      * 
-     * @param TopicMessage $topicMessage The message to send.
+     * @param Message $topicMessage The message to send.
      * 
      * @return bool True if we got a 200 status code.
      * 
@@ -144,17 +145,17 @@ class Messaging
      * 
      * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-topics
      */
-    public function sendToTopic(TopicMessage $topicMessage): bool
+    public function sendToTopic(Message $topicMessage): bool
     {
         $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
-        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $topicMessage->toArray(), null);
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $topicMessage->toArray());
         return $response->getStatusCode() === 200;
     }
 
     /**
-     * Subscribe token to topic.
+     * Subscribe token to topic. TODO: Check if this also works with a FID?
      * 
-     * @param string $token The registration token.
+     * @param string $tokenOrFID The registration token or FID token.
      * @param string $topic The topic.
      * 
      * @return bool True if we got a 200 status code.
@@ -164,17 +165,17 @@ class Messaging
      * 
      * @link https://developers.google.com/instance-id/reference/server#create_a_relation_mapping_for_an_app_instance
      */
-    public function subscribeToTopic(string $token, string $topic): bool
+    public function subscribeToTopic(string $tokenOrFID, string $topic): bool
     {
-        $uri = 'https://iid.googleapis.com/iid/v1/' . $token . '/rel/topics/' . $topic;
-        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', null, ['access_token_auth' => 'true']);
+        $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions';
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', null, null, ['topicName' => $topic]);
         return $response->getStatusCode() === 200;
     }
 
     /**
      * Unsubscribe tokens from topic.
      * 
-     * @param array $tokens Array with tokens.
+     * @param string $tokenOrFID Token.
      * @param string $topic Topic name.
      * 
      * @return bool True if we got a 200 status code.
@@ -184,23 +185,17 @@ class Messaging
      * 
      * @link https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
      */
-    public function unsubscribeFromTopic(array $tokens, string $topic): bool
+    public function unsubscribeFromTopic(string $tokenOrFID, string $topic): bool
     {
-        // See: https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
-        // TODO: For each token we receive SUCCESS (empty) or some kind of ERROR code. But the HTTP response will still be 200.
-        $uri = 'https://iid.googleapis.com/iid/v1:batchRemove';
-        $json = [
-            'to' => "/topics/$topic",
-            'registration_tokens' => $tokens
-        ];
-        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $json, ['access_token_auth' => 'true']);
+        $uri = 'https://fcm.googleapis.com/v1/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions';
+        $response = $this->callWithRetryOnExpiredAccessToken($uri, 'DELETE');
         return $response->getStatusCode() === 200;
     }
 
     /**
      * Send multiple messages.
      * 
-     * @param array<TokenMessage> $tokenMessages A list of messages to send.
+     * @param array<Message> $messages A list of messages to send.
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
@@ -210,15 +205,15 @@ class Messaging
      * 
      * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      */
-    public function sendAll(array $tokenMessages): SendAllResult
+    public function sendAll(array $messages): SendAllResult
     {
-        return $this->_sendAll($tokenMessages);
+        return $this->_sendAll($messages);
     }
 
     /**
      * Validate multiple messages. Can be used to check if tokens are still registered.
      * 
-     * @param array<TokenMessage> $tokenMessages A list of messages to validate.
+     * @param array<Message> $messages A list of messages to validate.
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
      * 
@@ -229,15 +224,15 @@ class Messaging
      * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send
      */
-    public function validateAll(array $tokenMessages): SendAllResult
+    public function validateAll(array $messages): SendAllResult
     {
-        return $this->_sendAll($tokenMessages, true);
+        return $this->_sendAll($messages, true);
     }
 
     /**
      * Send multiple messages with an optional retry in case of expired access token.
      * 
-     * @param array<TokenMessage> $tokenMessages A list of messages to send.
+     * @param array<Message> $messages A list of messages to send.
      * @param ?SendAllResult $sendAllResult The SendAllResult instance (this is only defined if this is a retry in case of expired access token).
      * 
      * @return SendAllResult A SendAllResult result, which contains the sent, unregistered and error
@@ -248,7 +243,7 @@ class Messaging
      * 
      * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      */
-    private function _sendAll(array $tokenMessages, bool $validate = false, ?SendAllResult $sendAllResult = null): SendAllResult
+    private function _sendAll(array $messages, bool $validate = false, ?SendAllResult $sendAllResult = null): SendAllResult
     {
         $client = HttpClient::create();
         $sendMessagesUri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
@@ -267,8 +262,8 @@ class Messaging
 
             // These are done async and with HTTP/2 multiplexed
             // The responses are lazy
-            foreach ($tokenMessages as $message) {
-                $this->logger->debug("Send request to $sendMessagesUri for token {$message->getToken()}");
+            foreach ($messages as $message) {
+                $this->logger->debug("Send request to $sendMessagesUri for {$message->getKeyType()} token {$message->getKey()}");
                 $body = $message->toArray();
                 if ($validate) {
                     $body['validate_only'] = true;
@@ -284,7 +279,7 @@ class Messaging
             for ($i = 0; $i < count($responses); $i++) {
 
                 $response = $responses[$i];
-                $message = array_shift($tokenMessages);
+                $message = array_shift($messages);
 
                 $code = $response->getStatusCode();
                 $content = $response->getContent(false);
@@ -316,10 +311,10 @@ class Messaging
                             $sendAllResult->addToErrors($message->getId(), $fcmError);
                             throw new FcmException($fcmError, $sendAllResult);
                         }
-                        array_unshift($tokenMessages, $message); // Put back this last message we removed earlier, because we have to process this one again.
-                        return $this->_sendAll($tokenMessages, $validate, $sendAllResult);
+                        array_unshift($messages, $message); // Put back this last message we removed earlier, because we have to process this one again.
+                        return $this->_sendAll($messages, $validate, $sendAllResult);
                     } else {
-                        $this->logger->warning("Unknown API response with statuscode $code for {$message->getToken()}: " . $content);
+                        $this->logger->warning("Unknown API response with statuscode $code for {$message->getKeyType()} {$message->getKey()}: " . $content);
                         $sendAllResult->addToErrors($message->getId(), $fcmError);
                     }
                 }
