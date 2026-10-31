@@ -19,7 +19,7 @@ class Message
     private ?string $token;
     private ?string $fid;
     private ?string $topic;
-    private ?array $androidConfig;
+    private ?MessageAndroidConfig $androidConfig;
 
     /**
      * @param int $id A unique identifier for this message, for example use a primary key from your database.
@@ -44,11 +44,11 @@ class Message
     /**
      * Set the Android specific configuration.
      * 
-     * @param array $androidConfig The Android config array.
+     * @param MessageAndroidConfig $androidConfig The Android config array.
      * 
      * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
      */
-    public function setAndroidConfig(array $androidConfig)
+    public function setAndroidConfig(MessageAndroidConfig $androidConfig)
     {
         $this->androidConfig = $androidConfig;
     }
@@ -114,7 +114,7 @@ class Message
         }
 
         if (!empty($this->androidConfig)) {
-            $message['android'] = $this->androidConfig;
+            $message['android'] = $this->androidConfig->toArray();
         }
 
         return ['message' => $message];
