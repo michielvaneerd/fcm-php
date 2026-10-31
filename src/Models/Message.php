@@ -9,12 +9,12 @@ namespace Mve\FcmPhp\Models;
  */
 class Message
 {
-
     public const KEY_TYPE_FID = 'fid';
     public const KEY_TYPE_TOKEN = 'token';
     public const KEY_TYPE_TOPIC = 'topic';
 
-    private ?array $notification;
+    private ?string $title;
+    private ?string $body;
     private ?array $data;
     private ?string $token;
     private ?string $fid;
@@ -22,43 +22,29 @@ class Message
     private ?MessageAndroidConfig $androidConfig;
 
     /**
-     * @param int $id A unique identifier for this message, for example use a primary key from your database.
+     * A unique identifier for this message, for example use a primary key from your database.
      */
-    function __construct(private int $id) {}
+    private int $id;
 
-    public function setToken(string $token)
-    {
-        $this->token = $token;
-    }
-
-    public function setFID(string $fid)
-    {
-        $this->fid = $fid;
-    }
-
-    public function setTopic(string $topic)
-    {
+    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
+    function __construct(
+        int $id,
+        ?string $title = null,
+        ?string $body = null,
+        ?string $topic = null,
+        ?string $token = null,
+        ?string $fid = null,
+        ?array $data = null,
+        ?MessageAndroidConfig $androidConfig = null
+    ) {
+        $this->id = $id;
+        $this->title = $title;
+        $this->body = $body;
         $this->topic = $topic;
-    }
-
-    /**
-     * Set the Android specific configuration.
-     * 
-     * @param MessageAndroidConfig $androidConfig The Android config array.
-     * 
-     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
-     */
-    public function setAndroidConfig(MessageAndroidConfig $androidConfig)
-    {
+        $this->token = $token;
+        $this->fid = $fid;
+        $this->data = $data;
         $this->androidConfig = $androidConfig;
-    }
-
-    public function setNotification(string $title, string $body)
-    {
-        $this->notification = [
-            'title' => $title,
-            'body' => $body
-        ];
     }
 
     public function getKey(): ?string
@@ -105,8 +91,14 @@ class Message
             $this->getKeyType() => $this->getKey()
         ];
 
-        if (!empty($this->notification)) {
-            $message['notification'] = $this->notification;
+        if (!empty($this->title) || !empty($this->body)) {
+            $message['notification'] = [];
+            if (!empty($this->title)) {
+                $message['notification']['title'] = $this->title;
+            }
+            if (!empty($this->title) || !empty($this->body)) {
+                $message['notification']['body'] = $this->body;
+            }
         }
 
         if (!empty($this->data)) {

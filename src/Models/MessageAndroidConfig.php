@@ -9,7 +9,6 @@ namespace Mve\FcmPhp\Models;
  */
 class MessageAndroidConfig
 {
-
     public const PRIORITY_NORMAL = 'NORMAL';
     public const PRIORITY_HIGH = 'HIGH';
 
@@ -17,6 +16,14 @@ class MessageAndroidConfig
     public const VISIBILITY_PRIVATE = 'VISIBILITY_PRIVATE';
     public const VISIBILITY_PUBLIC = 'VISIBILITY_PUBLIC';
     public const VISIBILITY_SECRET = 'VISIBILITY_SECRET';
+
+    function __construct(?string $priority = null, ?string $visibility = null, ?array $data = null, ?MessageAndroidNotification $notification = null)
+    {
+        $this->priority = $priority;
+        $this->visibility = $visibility;
+        $this->data = $data;
+        $this->notification = $notification;
+    }
 
     /**
      * Priority of a message to send to Android devices. Note this priority is an FCM concept that controls when the message is delivered.

@@ -267,8 +267,8 @@ class Messaging
             // These are done async and with HTTP/2 multiplexed
             // The responses are lazy
             foreach ($messages as $message) {
-                $this->logger->debug("Send request to $sendMessagesUri for {$message->getKeyType()} {$message->getKey()}");
                 $body = $message->toArray();
+                $this->logger->debug("Send request to $sendMessagesUri for {$message->getKeyType()} {$message->getKey()}", context: $body);
                 if ($validate) {
                     $body['validate_only'] = true;
                 }

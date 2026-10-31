@@ -9,6 +9,16 @@ namespace Mve\FcmPhp\Models;
  */
 class MessageAndroidNotification
 {
+
+    function __construct(?string $title = null, ?string $body = null, ?string $sound = null, ?string $color = null, ?string $channelId = null)
+    {
+        $this->title = $title;
+        $this->body = $body;
+        $this->sound = $sound;
+        $this->color = $color;
+        $this->channelId = $channelId;
+    }
+
     private ?string $title;
     private ?string $body;
 
