@@ -19,6 +19,7 @@ class Message
     private ?string $token;
     private ?string $fid;
     private ?string $topic;
+    private ?array $androidConfig;
 
     /**
      * @param int $id A unique identifier for this message, for example use a primary key from your database.
@@ -38,6 +39,18 @@ class Message
     public function setTopic(string $topic)
     {
         $this->topic = $topic;
+    }
+
+    /**
+     * Set the Android specific configuration.
+     * 
+     * @param array $androidConfig The Android config array.
+     * 
+     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
+     */
+    public function setAndroidConfig(array $androidConfig)
+    {
+        $this->androidConfig = $androidConfig;
     }
 
     public function setNotification(string $title, string $body)
@@ -81,19 +94,16 @@ class Message
 
     /**
      * Returns the message as an array in the format as expected by the Google API.
+     * https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
      */
     public function toArray(): array
     {
-        $message = [];
+        assert(!empty($this->getKey()), 'Fid, token or topic must be set');
+        assert(!(empty($this->notification) && empty($this->data)), 'Data or notification must be set or both');
 
-        // Only token OR fid OR topic can be set
-        if (!empty($this->token)) {
-            $message['token'] = $this->token;
-        } elseif (!empty($this->fid)) {
-            $message['fid'] = $this->fid;
-        } elseif (!empty($this->topic)) {
-            $message['topic'] = $this->topic;
-        }
+        $message = [
+            $this->getKeyType() => $this->getKey()
+        ];
 
         if (!empty($this->notification)) {
             $message['notification'] = $this->notification;
@@ -102,6 +112,11 @@ class Message
         if (!empty($this->data)) {
             $message['data'] = $this->data;
         }
+
+        if (!empty($this->androidConfig)) {
+            $message['android'] = $this->androidConfig;
+        }
+
         return ['message' => $message];
     }
 }

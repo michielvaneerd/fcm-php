@@ -22,9 +22,10 @@ class MyBaseTestCase extends TestCase
     private string $jsonFile;
     protected Logger $logger;
     protected array $tokens;
+    protected array $fids;
     protected Messaging $messaging;
 
-    public function echo($s)
+    public function echo(string $s)
     {
         echo "TEST: $s\n";
     }
@@ -48,11 +49,19 @@ class MyBaseTestCase extends TestCase
         }
 
         $this->tokens = [];
-        $envTokens = trim((string)getenv('TOKENS')); // Firebase registration token, this way we can add one valid token.
+        $envTokens = trim((string)getenv('TOKENS')); // Firebase registration tokens, this way we can add one valid token.
         if (!empty($envTokens)) {
             $this->tokens = array_map(function ($token) {
                 return trim($token);
             }, explode(',', $envTokens));
+        }
+
+        $this->fids = [];
+        $envFids = trim((string)getenv('FIDS')); // Firebase FIDs, this way we can add one valid token.
+        if (!empty($envFids)) {
+            $this->fids = array_map(function ($fid) {
+                return trim($fid);
+            }, explode(',', $envFids));
         }
 
         $this->messaging = new Messaging($this->cache, $this->jsonFile, $this->logger);

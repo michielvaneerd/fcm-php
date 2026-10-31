@@ -5,9 +5,6 @@ declare(strict_types=1);
 use Mve\FcmPhp\Models\FcmError;
 use Mve\FcmPhp\Models\FcmException;
 use Mve\FcmPhp\Models\Message;
-use Mve\FcmPhp\Models\Messaging;
-use Mve\FcmPhp\Models\TokenMessage;
-use Mve\FcmPhp\Models\TopicMessage;
 use Mve\Tests\MyBaseTestCase;
 
 class MessagingWithoutEnvTokenTest extends MyBaseTestCase
@@ -36,9 +33,15 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
 
     public function testSendAll()
     {
+        $msg1 = new Message(1);
+        $msg1->setToken(self::CORRECTLY_FORMATTED_TOKEN);
+        $msg1->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg2 = new Message(2);
+        $msg2->setToken(self::INVALID_TOKEN);
+        $msg2->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
         $messages = [
-            new TokenMessage(1, self::CORRECTLY_FORMATTED_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
-            new TokenMessage(2, self::INVALID_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
+            $msg1,
+            $msg2
         ];
         $sendResult = $this->messaging->sendAll($messages);
         $unregistered = $sendResult->getUnregistered();
@@ -51,16 +54,24 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
 
     public function testSendToTopic()
     {
-        $message = new TopicMessage(1, self::TOPIC_NAME, self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__, self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__);
-        $result = $this->messaging->sendToTopic($message);
+        $msg = new Message(1);
+        $msg->setTopic(self::TOPIC_NAME);
+        $msg->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $result = $this->messaging->sendToTopic($msg);
         $this->assertTrue($result);
     }
 
     public function testValidateAll()
     {
+        $msg1 = new Message(1);
+        $msg1->setToken(self::CORRECTLY_FORMATTED_TOKEN);
+        $msg1->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg2 = new Message(2);
+        $msg2->setToken(self::INVALID_TOKEN);
+        $msg2->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
         $messages = [
-            new TokenMessage(1, self::CORRECTLY_FORMATTED_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
-            new TokenMessage(2, self::INVALID_TOKEN, self::NOTIFICATION_CONTENT, self::NOTIFICATION_TITLE),
+            $msg1,
+            $msg2
         ];
         $sendResult = $this->messaging->validateAll($messages);
         $unregistered = $sendResult->getUnregistered();

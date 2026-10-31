@@ -6,9 +6,8 @@ namespace Mve\FcmPhp\Models;
 
 /**
  * An error with specific Google Firebase information.
- * 
  * @link https://firebase.google.com/docs/reference/fcm/rest/v1/ErrorCode
- * @link https://cloud.google.com/resource-manager/docs/core_errors
+ * @link https://docs.cloud.google.com/resource-manager/docs/core_errors
  */
 class FcmError
 {

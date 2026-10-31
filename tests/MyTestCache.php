@@ -12,7 +12,7 @@ use Mve\FcmPhp\Models\CacheInterface;
 class MyTestCache implements CacheInterface
 {
     private static $cache = [];
-    private static $cachePath = __DIR__ . '/cache.json';
+    private static string $cachePath = __DIR__ . '/cache.json';
 
     private function getCacheJson(): array
     {

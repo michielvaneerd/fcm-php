@@ -116,6 +116,8 @@ class Messaging
      * @throws \Exception For all other errors.
      * 
      * @link https://developers.google.com/instance-id/reference/server#get_information_about_app_instances
+     * 
+     * @deprecated
      */
     public function getInfo(string $token, bool $details = false): array
     {
@@ -143,17 +145,20 @@ class Messaging
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
-     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-topics
+     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send
      */
     public function sendToTopic(Message $topicMessage): bool
     {
+        assert($topicMessage->getKeyType() === Message::KEY_TYPE_TOPIC, 'The type is not set to topic');
+        assert(!empty($topicMessage->getKey()), 'The topic is not set.');
+
         $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/messages:send';
         $response = $this->callWithRetryOnExpiredAccessToken($uri, 'POST', $topicMessage->toArray());
         return $response->getStatusCode() === 200;
     }
 
     /**
-     * Subscribe token to topic. TODO: Check if this also works with a FID?
+     * Subscribe token to topic.
      * 
      * @param string $tokenOrFID The registration token or FID token.
      * @param string $topic The topic.
@@ -163,7 +168,7 @@ class Messaging
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
-     * @link https://developers.google.com/instance-id/reference/server#create_a_relation_mapping_for_an_app_instance
+     * @link https://firebase.google.com/docs/reference/fcm/fcmtopics/rest/v1/projects.registrations.topicSubscriptions/create
      */
     public function subscribeToTopic(string $tokenOrFID, string $topic): bool
     {
@@ -183,11 +188,11 @@ class Messaging
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
-     * @link https://developers.google.com/instance-id/reference/server#manage_relationship_maps_for_multiple_app_instances
+     * @link https://firebase.google.com/docs/reference/fcm/fcmtopics/rest/v1/projects.registrations.topicSubscriptions/delete
      */
     public function unsubscribeFromTopic(string $tokenOrFID, string $topic): bool
     {
-        $uri = 'https://fcm.googleapis.com/v1/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions';
+        $uri = 'https://fcm.googleapis.com/v1/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions/' . $topic;
         $response = $this->callWithRetryOnExpiredAccessToken($uri, 'DELETE');
         return $response->getStatusCode() === 200;
     }
@@ -203,7 +208,7 @@ class Messaging
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
-     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
+     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send
      */
     public function sendAll(array $messages): SendAllResult
     {
@@ -221,12 +226,11 @@ class Messaging
      * @throws FcmException If we get a Google error.
      * @throws \Exception For all other errors.
      * 
-     * @link https://firebase.google.com/docs/cloud-messaging/send-message#send-messages-to-multiple-devices
      * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages/send
      */
     public function validateAll(array $messages): SendAllResult
     {
-        return $this->_sendAll($messages, true);
+        return $this->_sendAll($messages, validate: true);
     }
 
     /**

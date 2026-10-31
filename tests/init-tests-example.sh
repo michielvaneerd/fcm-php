@@ -11,3 +11,7 @@ export ACCESS_TOKEN=""
 # A comma separated list of registration tokens that you want to use in the tests.
 # Optional
 export TOKENS=""
+
+# A comma separated list of FIDs that you want to use in the tests.
+# Optional
+export FIDS=""
