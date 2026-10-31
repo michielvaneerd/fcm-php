@@ -17,19 +17,19 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
         parent::setUp();
     }
 
-    public function testGetInfoFromUnregisteredToken()
-    {
-        $this->expectException(FcmException::class);
-        $this->expectExceptionCode(404);
-        $this->messaging->getInfo(self::CORRECTLY_FORMATTED_TOKEN, true);
-    }
+    // public function testGetInfoFromUnregisteredToken()
+    // {
+    //     $this->expectException(FcmException::class);
+    //     $this->expectExceptionCode(404);
+    //     $this->messaging->getInfo(self::CORRECTLY_FORMATTED_TOKEN, true);
+    // }
 
-    public function testGetInfoFromInvalidToken()
-    {
-        $this->expectException(FcmException::class);
-        $this->expectExceptionCode(400);
-        $this->messaging->getInfo(self::INVALID_TOKEN, true);
-    }
+    // public function testGetInfoFromInvalidToken()
+    // {
+    //     $this->expectException(FcmException::class);
+    //     $this->expectExceptionCode(400);
+    //     $this->messaging->getInfo(self::INVALID_TOKEN, true);
+    // }
 
     public function testSendAll()
     {

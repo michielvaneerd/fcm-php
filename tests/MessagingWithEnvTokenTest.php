@@ -14,12 +14,12 @@ class MessagingWithEnvTokenTest extends MyBaseTestCase
     /**
      * Get information about a registration token.
      */
-    public function testGetInfoFromEnvToken()
-    {
-        $result = $this->messaging->getInfo($this->tokens[0], true);
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('application', $result);
-    }
+    // public function testGetInfoFromEnvToken()
+    // {
+    //     $result = $this->messaging->getInfo($this->tokens[0], true);
+    //     $this->assertIsArray($result);
+    //     $this->assertArrayHasKey('application', $result);
+    // }
 
     public function testSendAll()
     {

@@ -192,7 +192,7 @@ class Messaging
      */
     public function unsubscribeFromTopic(string $tokenOrFID, string $topic): bool
     {
-        $uri = 'https://fcm.googleapis.com/v1/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions/' . $topic;
+        $uri = 'https://fcm.googleapis.com/v1/projects/' . $this->accessTokenHandler->getProjectId() . '/registrations/' . $tokenOrFID . '/topicSubscriptions/' . $topic;
         $response = $this->callWithRetryOnExpiredAccessToken($uri, 'DELETE');
         return $response->getStatusCode() === 200;
     }
@@ -267,7 +267,7 @@ class Messaging
             // These are done async and with HTTP/2 multiplexed
             // The responses are lazy
             foreach ($messages as $message) {
-                $this->logger->debug("Send request to $sendMessagesUri for {$message->getKeyType()} token {$message->getKey()}");
+                $this->logger->debug("Send request to $sendMessagesUri for {$message->getKeyType()} {$message->getKey()}");
                 $body = $message->toArray();
                 if ($validate) {
                     $body['validate_only'] = true;
