@@ -11,8 +11,8 @@ namespace Mve\FcmPhp\Models;
  */
 class MessageAndroidConfig
 {
-    public const PRIORITY_NORMAL = 'NORMAL';
-    public const PRIORITY_HIGH = 'HIGH';
+    public const PRIORITY_NORMAL = 'normal';
+    public const PRIORITY_HIGH = 'high';
 
     public const VISIBILITY_UNSPECIFIED = 'VISIBILITY_UNSPECIFIED';
     public const VISIBILITY_PRIVATE = 'VISIBILITY_PRIVATE';

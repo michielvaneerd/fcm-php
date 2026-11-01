@@ -11,13 +11,20 @@ namespace Mve\FcmPhp\Models;
  */
 class MessageAndroidNotification
 {
-    function __construct(?string $title = null, ?string $body = null, ?string $sound = null, ?string $color = null, ?string $channelId = null)
-    {
+    function __construct(
+        ?string $title = null,
+        ?string $body = null,
+        ?string $sound = null,
+        ?string $color = null,
+        ?string $channelId = null,
+        ?string $image = null
+    ) {
         $this->title = $title;
         $this->body = $body;
         $this->sound = $sound;
         $this->color = $color;
         $this->channelId = $channelId;
+        $this->image = $image;
     }
 
     /**
@@ -39,6 +46,11 @@ class MessageAndroidNotification
      * The notification's icon. Sets the notification icon to myicon for drawable resource myicon. If you don't send this key in the request, FCM displays the launcher icon specified in your app manifest.
      */
     private ?string $icon;
+
+    /**
+     * Contains the URL of an image that is going to be displayed in a notification.
+     */
+    private ?string $image;
 
     /**
      * The notification's icon color, expressed in #rrggbb format.
@@ -166,6 +178,9 @@ class MessageAndroidNotification
         }
         if (!empty($this->channelId)) {
             $msg['channel_id'] = $this->channelId;
+        }
+        if (!empty($this->image)) {
+            $msg['image'] = $this->image;
         }
         return $msg;
     }
