@@ -2,6 +2,7 @@
 
 use Mve\FcmPhp\Models\Message;
 use Mve\FcmPhp\Models\MessageAndroidConfig;
+use Mve\FcmPhp\Models\MessageAndroidNotification;
 use Mve\Tests\MyBaseTestCase;
 
 class MessagingDataWithEnvFIDTest extends MyBaseTestCase
@@ -20,8 +21,11 @@ class MessagingDataWithEnvFIDTest extends MyBaseTestCase
             $msg = new Message($id, fid: $fid, data: [
                 'type' => 'incoming_call',
                 'callId' => '0611111111',
-                'callerName' => 'Pete Sampras'
-            ], androidConfig: new MessageAndroidConfig(priority: MessageAndroidConfig::PRIORITY_HIGH));
+                'callerName' => 'My dog is calling...',
+                'image' => 'https://picsum.photos/id/237/200/300'
+            ], androidConfig: new MessageAndroidConfig(
+                priority: MessageAndroidConfig::PRIORITY_HIGH
+            ));
             return $msg;
         }, $this->fids, array_keys($this->fids));
         $sendResult = $this->messaging->sendAll($messages);
