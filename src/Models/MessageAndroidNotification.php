@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Mve\FcmPhp\Models;
 
 /**
- * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
+ * The Android notification class.
+ * 
+ * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidNotification
  */
 class MessageAndroidNotification
 {
-
     function __construct(?string $title = null, ?string $body = null, ?string $sound = null, ?string $color = null, ?string $channelId = null)
     {
         $this->title = $title;
@@ -19,7 +20,14 @@ class MessageAndroidNotification
         $this->channelId = $channelId;
     }
 
+    /**
+     * Title of notification.
+     */
     private ?string $title;
+
+    /**
+     * Content of notification.
+     */
     private ?string $body;
 
     /**
@@ -135,7 +143,9 @@ class MessageAndroidNotification
     //   "analytics_label": string
     // }
 
-
+    /**
+     * Returns the array format that Google expects.
+     */
     public function toArray(): array
     {
         $msg = [];

@@ -26,13 +26,12 @@ class MessagingWithEnvTokenTest extends MyBaseTestCase
         $this->assertNotEmpty($this->tokens);
         $messages = array_map(function ($token, $index) {
             $id = $index + 1;
-            $msg = new Message($id);
-            $msg->setToken($token);
-            $msg->setNotification(
+            return new Message(
+                $id,
+                token: $token,
                 title: self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id",
                 body: self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id"
             );
-            return $msg;
         }, $this->tokens, array_keys($this->tokens));
         $sendResult = $this->messaging->sendAll($messages);
         $this->assertEquals(count($this->tokens), count($sendResult->getSent()) + count($sendResult->getUnregistered()) + count($sendResult->getErrors()));
@@ -43,13 +42,12 @@ class MessagingWithEnvTokenTest extends MyBaseTestCase
         $this->assertNotEmpty($this->tokens);
         $messages = array_map(function ($token, $index) {
             $id = $index + 1;
-            $msg = new Message($id);
-            $msg->setToken($token);
-            $msg->setNotification(
+            return new Message(
+                $id,
+                token: $token,
                 title: self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id",
                 body: self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id"
             );
-            return $msg;
         }, $this->tokens, array_keys($this->tokens));
         $sendResult = $this->messaging->validateAll($messages);
         $this->assertEquals(count($this->tokens), count($sendResult->getSent()) + count($sendResult->getUnregistered()) + count($sendResult->getErrors()));

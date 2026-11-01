@@ -26,13 +26,12 @@ class MessagingWithEnvFIDTest extends MyBaseTestCase
         $this->assertNotEmpty($this->fids);
         $messages = array_map(function ($fid, $index) {
             $id = $index + 1;
-            $msg = new Message($id);
-            $msg->setFID($fid);
-            $msg->setNotification(
+            return new Message(
+                $id,
+                fid: $fid,
                 title: self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id",
                 body: self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id"
             );
-            return $msg;
         }, $this->fids, array_keys($this->fids));
         $sendResult = $this->messaging->sendAll($messages);
         $this->assertEquals(count($this->fids), count($sendResult->getSent()) + count($sendResult->getUnregistered()) + count($sendResult->getErrors()));
@@ -43,13 +42,12 @@ class MessagingWithEnvFIDTest extends MyBaseTestCase
         $this->assertNotEmpty($this->fids);
         $messages = array_map(function ($fid, $index) {
             $id = $index + 1;
-            $msg = new Message($id);
-            $msg->setFID($fid);
-            $msg->setNotification(
+            return new Message(
+                $id,
+                fid: $fid,
                 title: self::NOTIFICATION_TITLE . ' - ' . __FUNCTION__ . " #$id",
                 body: self::NOTIFICATION_CONTENT . ' - ' . __FUNCTION__ . " #$id"
             );
-            return $msg;
         }, $this->fids, array_keys($this->fids));
         $sendResult = $this->messaging->validateAll($messages);
         $this->assertEquals(count($this->fids), count($sendResult->getSent()) + count($sendResult->getUnregistered()) + count($sendResult->getErrors()));

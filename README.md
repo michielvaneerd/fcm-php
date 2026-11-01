@@ -2,6 +2,29 @@
 
 Send Google Firebase Cloud messages with PHP.
 
+## !!! Breaking changes !!!
+
+### From 0.X to 1.X
+
+In short:
+
+- Added Firebase Installation ID handling. This will be the sucessor of the regisatration token which will be stopped September 2027.
+- Refactored the `Message` classes - now there is only 1 `Message` class that can be created with several parameters, for example a `fid`, `token` or `topic` etc.
+
+Some examples on how to to change:
+
+```
+// Previously:
+new TokenMessage(1, 'token1', "Content of notification", "Title of notification");
+new TopicMessage(2, 'topicName', "Content of notification", "Title of notification");
+
+// Now:
+new Message(1, token: 'token1', title: "Title of notification", body: "Content of notification");
+new Message(2, topic: 'topicName', title: "Title of notification", body: "Content of notification");
+// And not possible previously:
+new Message(3, fid: 'fid1', title: "Title of notification", body: "Content of notification");
+```
+
 ## API documentation
 
 See [API documentation](https://michielvaneerd.github.io/fcm-php/)
@@ -33,21 +56,22 @@ The `sendAll` method uses HTTP/2 multiplexing. It's very fast and can be used to
 
 ```php
 // Create messages. The first argument is the ID - this can be used to map the result to the specific message after sending.
-// Firebase deprecated sending with a token (TokenMessage) and the preferred way is now using the FID (FIDMessage).
-// Currently both are still supported.
 $messages = [
-    new TokenMessage(1, 'token1', "Content of notification", "Title of notification"),
-    new TokenMessage(2, 'token1', "Content of notification", "Title of notification"),
-    new FIDMessage(3, 'fid1', "Content of notification", "Title of notification")
+    223 => new Message(223, token: 'token1', title: "Title of notification", body: "Content of notification"),
+    33456 => new Message(33456, token: 'token2', title: "Title of notification", body: "Content of notification"),
+    123 => new Message(123, fid: 'fid1', title: "Title of notification", body: "Content of notification"),
 ];
 // Send the messages
 try {
-    $sendResult = $messaging->sendAll($messages);
+    $sendResult = $messaging->sendAll(array_values($messages));
     foreach ($sendResult->getSent() as $messageId => $firebaseId) {
         // Successfully sent messages
     }
     foreach ($sendResult->getUnregistered() as $messageId => $fcmError) {
         // The tokens/FIDs for these messages can be deleted safely.
+        $message = $messages[$messageId];
+        echo $message->getKey(); // the value of the token or fid
+        echo $message->getKeyType(); // 'token' or 'fid'
     }
     foreach ($sendResult->getErrors() as $messageId => $fcmError) {
         // See the $fcmError for specifics about this error.

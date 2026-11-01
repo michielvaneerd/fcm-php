@@ -13,12 +13,40 @@ class Message
     public const KEY_TYPE_TOKEN = 'token';
     public const KEY_TYPE_TOPIC = 'topic';
 
+    /**
+     * Title of notification.
+     */
     private ?string $title;
+
+    /**
+     * Content of notification.
+     */
     private ?string $body;
+
+    /**
+     * Associative array with custom data.
+     */
     private ?array $data;
+
+    /**
+     * Registration token (will be deprecated - try to go to Firebase Installation ID)
+     */
     private ?string $token;
+
+    /**
+     * Firebase Installation ID
+     */
     private ?string $fid;
+
+    /**
+     * Topic name.
+     */
     private ?string $topic;
+
+    /**
+     * Specific config for Android.
+     * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
+     */
     private ?MessageAndroidConfig $androidConfig;
 
     /**
@@ -26,7 +54,6 @@ class Message
      */
     private int $id;
 
-    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
     function __construct(
         int $id,
         ?string $title = null,
@@ -47,11 +74,17 @@ class Message
         $this->androidConfig = $androidConfig;
     }
 
+    /**
+     * Get the value of the fid, token or topic (only one can be set).
+     */
     public function getKey(): ?string
     {
         return $this->fid ?? $this->token ?? $this->topic;
     }
 
+    /**
+     * Get the type of key: fid, token or topic.
+     */
     public function getKeyType(): ?string
     {
         if (!empty($this->fid)) {
@@ -63,11 +96,6 @@ class Message
         } else {
             return null;
         }
-    }
-
-    public function setData(array $data)
-    {
-        $this->data = $data;
     }
 
     /**

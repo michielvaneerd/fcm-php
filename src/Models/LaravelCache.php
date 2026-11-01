@@ -7,6 +7,9 @@ namespace App\Models;
 use Illuminate\Support\Facades\Cache;
 use \Mve\FcmPhp\Models\CacheInterface;
 
+/**
+ * Simple CacheInterface implementation for Laravel.
+ */
 class LaravelCache implements CacheInterface
 {
     public function get(string $key): mixed

@@ -33,12 +33,8 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
 
     public function testSendAll()
     {
-        $msg1 = new Message(1);
-        $msg1->setToken(self::CORRECTLY_FORMATTED_TOKEN);
-        $msg1->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
-        $msg2 = new Message(2);
-        $msg2->setToken(self::INVALID_TOKEN);
-        $msg2->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg1 = new Message(1, token: self::CORRECTLY_FORMATTED_TOKEN, title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg2 = new Message(2, token: self::INVALID_TOKEN, title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
         $messages = [
             $msg1,
             $msg2
@@ -54,21 +50,15 @@ class MessagingWithoutEnvTokenTest extends MyBaseTestCase
 
     public function testSendToTopic()
     {
-        $msg = new Message(1);
-        $msg->setTopic(self::TOPIC_NAME);
-        $msg->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg = new Message(1, topic: self::TOPIC_NAME, title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
         $result = $this->messaging->sendToTopic($msg);
         $this->assertTrue($result);
     }
 
     public function testValidateAll()
     {
-        $msg1 = new Message(1);
-        $msg1->setToken(self::CORRECTLY_FORMATTED_TOKEN);
-        $msg1->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
-        $msg2 = new Message(2);
-        $msg2->setToken(self::INVALID_TOKEN);
-        $msg2->setNotification(title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg1 = new Message(1, token: self::CORRECTLY_FORMATTED_TOKEN, title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
+        $msg2 = new Message(2, token: self::INVALID_TOKEN, title: self::NOTIFICATION_TITLE, body: self::NOTIFICATION_CONTENT);
         $messages = [
             $msg1,
             $msg2

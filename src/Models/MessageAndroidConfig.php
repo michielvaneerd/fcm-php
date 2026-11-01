@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Mve\FcmPhp\Models;
 
 /**
- * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
+ * Configuration class for Android.
+ * 
+ * @link https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#AndroidConfig
  */
 class MessageAndroidConfig
 {
@@ -139,7 +141,9 @@ class MessageAndroidConfig
     //   "analytics_label": string
     // }
 
-
+    /**
+     * Returns the array format that Google expects.
+     */
     public function toArray(): array
     {
         $msg = [];
