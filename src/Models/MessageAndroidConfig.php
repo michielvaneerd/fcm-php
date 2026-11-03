@@ -19,12 +19,13 @@ class MessageAndroidConfig
     public const VISIBILITY_PUBLIC = 'VISIBILITY_PUBLIC';
     public const VISIBILITY_SECRET = 'VISIBILITY_SECRET';
 
-    function __construct(?string $priority = null, ?string $visibility = null, ?array $data = null, ?MessageAndroidNotification $notification = null)
+    function __construct(?string $priority = null, ?string $visibility = null, ?array $data = null, ?MessageAndroidNotification $notification = null, ?string $ttl = null)
     {
         $this->priority = $priority;
         $this->visibility = $visibility;
         $this->data = $data;
         $this->notification = $notification;
+        $this->ttl = $ttl;
     }
 
     /**
@@ -33,6 +34,12 @@ class MessageAndroidConfig
      * See PRIORITY_NORMAL and PRIORITY_HIGH.
      */
     private ?string $priority;
+
+    /**
+     * How long (in seconds) the message should be kept in FCM storage if the device is offline.
+     * Set to "0s" if you want to send the message immediately.
+     */
+    private ?string $ttl;
 
     /**
      * Different visibility levels of a notification. See VISIBILITY_UNSPECIFIED and other visibility constants.
@@ -158,6 +165,9 @@ class MessageAndroidConfig
         }
         if (!empty($this->notification)) {
             $msg['notification'] = $this->notification->toArray();
+        }
+        if (!empty($this->ttl)) {
+            $msg['ttl'] = $this->ttl;
         }
         return $msg;
     }
